@@ -29,10 +29,7 @@ namespace Train_D.Models
         public int TrainId { get; set; }
         public int TripId { get; set; }
 
-        // ( one to many ) relationship with Trips Table
         public virtual Trip Trip { get; set; }
-        
-        // (one to many ) relationship with Users Table
         public virtual User User { get; set; }
 
     }
