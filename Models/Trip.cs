@@ -15,11 +15,20 @@
         public string EndStaion { get; set; }
         public int TrainId { get; set; }
 
-        public Train Train { get; set; }
+        // (one to many ) relationship with Trains Table
+        public virtual Train Train { get; set; }
+
+        // (one to many ) relationship with Stations Table
         public virtual Station StationBegain { get; set; }
+
+        // (one to many ) relationship with Stations Table
         public virtual Station StationEnd { get; set; }
-        public List<Ticket> Tickets { get; set; }
-        public List<ClassTrip> ClassTrips { get; set; }
+
+        // (many to one ) relationship with Tickets Table
+        public virtual List<Ticket> Tickets { get; set; }
+
+        // (many to one ) relationship with ClassTrips Table
+        public virtual List<ClassTrip> ClassTrips { get; set; }
 
 
     }

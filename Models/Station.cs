@@ -21,9 +21,11 @@ namespace Train_D.Models
         public decimal? Latitude { get; set; }
 
         public string Address { get; set; }
-        
 
+        // (many to one) relationship with Trip Table
         public virtual List<Trip> TripsStart { get; set; }
+
+        // (many to one) relationship with Trip Table
         public virtual List<Trip> TripsEnd { get; set; }
     }
 }
