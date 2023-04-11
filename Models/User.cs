@@ -31,5 +31,8 @@ namespace Train_D.Models
 
         #nullable enable
         public byte[]? Image { get; set; }
+
+        // Add Refresh Token Reletion (1 user => M Tokens)
+        public List<RefreshTokens>? RefreshTokens { get; set; }
     }
 }

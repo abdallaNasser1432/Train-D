@@ -36,11 +36,6 @@ namespace Train_D
             builder.Services.AddScoped<IAuth, Auth>();
             builder.Services.AddTransient<IStationsServices, StationsServices>();
 
-            /*
-             * test from git 
-             */
-
-
             //Add Authantications
             builder.Services.AddAuthentication(options =>
             {
@@ -58,7 +53,8 @@ namespace Train_D
                     ValidateLifetime = true,
                     ValidIssuer = builder.Configuration["JWT:Issuer"],
                     ValidAudience = builder.Configuration["JWT:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"])),
+                    ClockSkew = TimeSpan.FromMinutes(1) // is a time for activate token 
                 };
             });
 
