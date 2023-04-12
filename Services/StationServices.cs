@@ -3,16 +3,32 @@ using System;
 using Train_D.Services;
 using Train_D.Models;
 using Train_D.Data;
+using Train_D.DTO;
+using AutoMapper;
 
 namespace Train_D.Services
 {
     public class StationsServices : IStationsServices
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public StationsServices(ApplicationDbContext context)
+        public StationsServices(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
+        }
+
+
+        public async Task<IEnumerable<StationDTO>> GetAll()
+        {
+            var result = await _context.Stations.ToListAsync();
+            return _mapper.Map<IEnumerable<StationDTO>>(result); // return Station DTO
+        }
+
+        public async Task<Station> GetByName(string stationName)
+        {
+            return await _context.Stations.SingleOrDefaultAsync(m => m.StationName == stationName);
         }
 
 
@@ -23,6 +39,7 @@ namespace Train_D.Services
             return station;
         }
 
+        
         public Station Delete(Station station)
         {
             _context.Remove(station);
@@ -30,15 +47,6 @@ namespace Train_D.Services
             return station;
         }
 
-        public async Task<IEnumerable<Station>> GetAll()
-        {
-            return await _context.Stations.ToListAsync();
-        }
-
-        public async Task<Station> GetByName(string stationName)
-        {
-            return await _context.Stations.SingleOrDefaultAsync(m => m.StationName == stationName);
-        }
 
         public Station Update(Station station)
         {

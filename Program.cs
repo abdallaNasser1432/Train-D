@@ -24,6 +24,10 @@ namespace Train_D
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            //Add  AutoMapper
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
             //Add JWT
             builder.Services.Configure<JWT>(builder.Configuration.GetSection(nameof(JWT)));
             //Add Identity 

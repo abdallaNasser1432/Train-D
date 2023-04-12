@@ -49,7 +49,6 @@ namespace Train_D.Controllers
             return Ok(new { Result.Token, Result.RefreshTokenExpiration }); // return RefreshToken and RefreshTokenExpiration
         }
 
-
         [HttpGet("RefreshToken")]
         public async Task<IActionResult> RefreshToken()
         {
