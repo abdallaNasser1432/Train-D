@@ -31,10 +31,9 @@ namespace Train_D.Controllers
                 return BadRequest(Result.Message);
 
             SetRefreshTokenInCookie(Result.RefreshToken, Result.RefreshTokenExpiration);
-            return Ok(new {Result.Token } ); // return Only Token
+            return Ok(new { Result.Token, Result.RefreshTokenExpiration }); // return RefreshToken and RefreshTokenExpiration
         }
-
-        [HttpPost("Login")]
+            [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             if (!ModelState.IsValid)
@@ -47,7 +46,7 @@ namespace Train_D.Controllers
 
             if (!string.IsNullOrEmpty(Result.RefreshToken))
                 SetRefreshTokenInCookie(Result.RefreshToken, Result.RefreshTokenExpiration);
-            return Ok(new { Result.Token }); // return Only Token
+            return Ok(new { Result.Token, Result.RefreshTokenExpiration }); // return RefreshToken and RefreshTokenExpiration
         }
 
 
