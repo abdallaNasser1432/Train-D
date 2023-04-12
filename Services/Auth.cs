@@ -14,6 +14,7 @@ namespace Train_D.Services
     public class Auth : IAuth
     {
         private readonly UserManager<User> _userManager;
+        
         private readonly JWT _jwt;
 
         public Auth(UserManager<User> userManager, IOptions<JWT> jwt)
@@ -103,7 +104,6 @@ namespace Train_D.Services
 
             return authModel;
         }
-
 
         private async Task<JwtSecurityToken> CreateJwtToken(User user)
         {

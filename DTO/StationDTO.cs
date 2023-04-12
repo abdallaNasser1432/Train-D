@@ -2,9 +2,6 @@
 {
     public class StationDTO
     {
-
-        
-
         public string Phone { get; set; }
 
         public string StationInfo { get; set; }
