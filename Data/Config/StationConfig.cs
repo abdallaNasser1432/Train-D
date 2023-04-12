@@ -15,6 +15,14 @@ namespace Train_D.Data.Config
             builder.Property(l => l.Longitude)
                 .HasColumnType("DECIMAL(12,9)");
 
+            builder.Property(a => a.Address)
+                .IsRequired();
+
+            builder.Property(p => p.Phone)
+                .IsRequired();
+
+            builder.Property(p => p.StationInfo)
+               .IsRequired();
 
             builder
                 .HasMany(t => t.TripsStart)

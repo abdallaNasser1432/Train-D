@@ -9,12 +9,12 @@
 
         public string StationInfo { get; set; }
 
-        public int? HoursOpen { get; set; }
+        public int HoursOpen { get; set; }
 
 
-        public decimal? Longitude { get; set; }
+        public decimal Longitude { get; set; }
 
 
-        public decimal? Latitude { get; set; }
+        public decimal Latitude { get; set; }
     }
 }
