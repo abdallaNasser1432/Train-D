@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Train_D.DTO;
 using Train_D.Models;
@@ -11,10 +12,12 @@ namespace Train_D.Controllers
     public class StationsController : ControllerBase
     {
         private readonly IStationsServices _StationServices;
+        private readonly IMapper _mapper; // add Interface IMapper 
 
-        public StationsController(IStationsServices stationsServices)
+        public StationsController(IStationsServices stationsServices, IMapper mapper = null)
         {
             _StationServices = stationsServices;
+            _mapper = mapper;
         }
 
         [HttpGet("GetAll")]
@@ -29,9 +32,8 @@ namespace Train_D.Controllers
         {
             var Station = await _StationServices.GetByName(StationName);
             if (Station == null)
-            {
                 return NotFound();
-            }
+            
             return Ok(Station);
 
         }
@@ -42,7 +44,9 @@ namespace Train_D.Controllers
             var movie = await _StationServices.GetByName(StationName);
             if (movie == null)
                 return NotFound();
+            
             _StationServices.Delete(movie);
+            
             return Ok(movie);
         }
 
@@ -55,8 +59,8 @@ namespace Train_D.Controllers
 
             Station.StationInfo = Dto.StationInfo;
             Station.Latitude = Dto.Latitude;
-            Station.Longitude = Dto.Longitude;
-            Station.HoursOpen = Dto.HoursOpen;
+            Station.Longitude = Dto.Longitude;                      // can't mapping and update together
+            Station.HoursOpen = Dto.HoursOpen;       // automapper mapped dto from scoure model but can't save it in var Station and updated it
             Station.Address = Dto.Address;
             Station.Phone = Dto.Phone;
             
@@ -65,23 +69,15 @@ namespace Train_D.Controllers
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Add([FromBody] Station Model)
+        public async Task<IActionResult> Add([FromBody] StationDTO DTO)
         {
-            var Station = await _StationServices.GetByName(Model.StationName);
+            var Station = await _StationServices.GetByName(DTO.StationName);
             if (Station is not null)
                 return BadRequest("Station Is Already Added");
 
-            var newStation = new Station
-            {
-                StationName = Model.StationName,
-                StationInfo = Model.StationInfo,
-                HoursOpen = Model.HoursOpen,
-                Longitude = Model.Longitude,
-                Latitude = Model.Latitude,
-                Address = Model.Address,
-                Phone = Model.Phone
-            };
-            await _StationServices.Add(newStation);
+            var result = _mapper.Map<Station>(DTO);
+            await _StationServices.Add(result);
+            
             return Ok("Station Is Added");
         }
     }
