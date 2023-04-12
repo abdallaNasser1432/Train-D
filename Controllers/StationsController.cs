@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Train_D.DTO;
+using Train_D.Models;
 using Train_D.Services;
 
 namespace Train_D.Controllers
@@ -16,14 +17,14 @@ namespace Train_D.Controllers
             _StationServices = stationsServices;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
             var Stations = await _StationServices.GetAll();
             return Ok(Stations);
         }
 
-        [HttpGet("{StationName}")]
+        [HttpGet("GetByName")]
         public async Task<IActionResult> GetByName(string StationName)
         {
             var Station = await _StationServices.GetByName(StationName);
@@ -35,7 +36,7 @@ namespace Train_D.Controllers
 
         }
 
-        [HttpDelete("{StationName}")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> Delete(string StationName)
         {
             var movie = await _StationServices.GetByName(StationName);
@@ -45,21 +46,43 @@ namespace Train_D.Controllers
             return Ok(movie);
         }
 
-        [HttpPut("{StationName}")]
-        public async Task<IActionResult> Update(string StationName, [FromForm] StationDTO Dto)
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update(string StationName, [FromBody] StationDTO Dto)
         {
             var Station = await _StationServices.GetByName(StationName);
-            if (Station == null)
+            if (Station is null)
                 return NotFound($"No Station was found with {StationName}");
 
             Station.StationInfo = Dto.StationInfo;
-            Station.HoursOpen = Dto.HoursOpen;
-            Station.Longitude = Dto.Longitude;
             Station.Latitude = Dto.Latitude;
+            Station.Longitude = Dto.Longitude;
+            Station.HoursOpen = Dto.HoursOpen;
+            Station.Address = Dto.Address;
             Station.Phone = Dto.Phone;
+            
+             _StationServices.Update(Station);
+            return Ok(Station);
+        }
 
-            return Ok(_StationServices.Update(Station));
+        [HttpPost("Add")]
+        public async Task<IActionResult> Add([FromBody] Station Model)
+        {
+            var Station = await _StationServices.GetByName(Model.StationName);
+            if (Station is not null)
+                return BadRequest("Station Is Already Added");
 
+            var newStation = new Station
+            {
+                StationName = Model.StationName,
+                StationInfo = Model.StationInfo,
+                HoursOpen = Model.HoursOpen,
+                Longitude = Model.Longitude,
+                Latitude = Model.Latitude,
+                Address = Model.Address,
+                Phone = Model.Phone
+            };
+            await _StationServices.Add(newStation);
+            return Ok("Station Is Added");
         }
     }
 }
