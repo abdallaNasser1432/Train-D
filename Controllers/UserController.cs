@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 using Train_D.DTO;
 using Train_D.Models;
 using Train_D.Services;
@@ -30,7 +31,7 @@ namespace Train_D.Controllers
                 return BadRequest(Result.Message);
 
             SetRefreshTokenInCookie(Result.RefreshToken, Result.RefreshTokenExpiration);
-            return Ok(Result);
+            return Ok(new {Result.Token } ); // return Only Token
         }
 
         [HttpPost("Login")]
@@ -46,7 +47,7 @@ namespace Train_D.Controllers
 
             if (!string.IsNullOrEmpty(Result.RefreshToken))
                 SetRefreshTokenInCookie(Result.RefreshToken, Result.RefreshTokenExpiration);
-            return Ok(Result);
+            return Ok(new { Result.Token }); // return Only Token
         }
 
 
