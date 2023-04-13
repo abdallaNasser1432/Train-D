@@ -20,9 +20,7 @@ namespace Train_D.Models
 
         public decimal Amount { get; set; }
 
-        public int? TransactionId { get; set; }
-
-        public DateTime TransactionDate { get; set; }
+        
 
         
         public string UserId { get; set; }

@@ -15,9 +15,6 @@ namespace Train_D.Data.Config
             builder.Property(a => a.Amount)
                 .HasColumnType("money");
 
-            builder.Property(t => t.TransactionDate)
-                .HasDefaultValueSql("GETDATE()");
-
             builder
                 .HasOne(t => t.Trip)
                 .WithMany(tk => tk.Tickets)
