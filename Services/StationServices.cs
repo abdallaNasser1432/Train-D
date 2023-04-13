@@ -11,19 +11,17 @@ namespace Train_D.Services
     public class StationsServices : IStationsServices
     {
         private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
 
-        public StationsServices(ApplicationDbContext context, IMapper mapper)
+
+        public StationsServices(ApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
 
-        public async Task<IEnumerable<StationDTO>> GetAll()
+        public async Task<IEnumerable<Station>> GetAll()
         {
-            var result = await _context.Stations.ToListAsync();
-            return _mapper.Map<IEnumerable<StationDTO>>(result); // return Station DTO
+            return await _context.Stations.ToListAsync();
         }
 
         public async Task<Station> GetByName(string stationName)

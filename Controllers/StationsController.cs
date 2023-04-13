@@ -38,36 +38,6 @@ namespace Train_D.Controllers
 
         }
 
-        [HttpDelete("Delete")]
-        public async Task<IActionResult> Delete(string StationName)
-        {
-            var movie = await _StationServices.GetByName(StationName);
-            if (movie == null)
-                return NotFound();
-            
-            _StationServices.Delete(movie);
-            
-            return Ok(movie);
-        }
-
-        [HttpPut("Update")]
-        public async Task<IActionResult> Update(string StationName, [FromBody] StationDTO Dto)
-        {
-            var Station = await _StationServices.GetByName(StationName);
-            if (Station is null)
-                return NotFound($"No Station was found with {StationName}");
-
-            Station.StationInfo = Dto.StationInfo;
-            Station.Latitude = Dto.Latitude;
-            Station.Longitude = Dto.Longitude;                      // can't mapping and update together
-            Station.HoursOpen = Dto.HoursOpen;       // automapper mapped dto from scoure model but can't save it in var Station and updated it
-            Station.Address = Dto.Address;
-            Station.Phone = Dto.Phone;
-            
-             _StationServices.Update(Station);
-            return Ok(Station);
-        }
-
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] StationDTO DTO)
         {
@@ -75,10 +45,37 @@ namespace Train_D.Controllers
             if (Station is not null)
                 return BadRequest("Station Is Already Added");
 
-            var result = _mapper.Map<Station>(DTO);
-            await _StationServices.Add(result);
-            
+            var newStation = _mapper.Map<Station>(DTO);
+            await _StationServices.Add(newStation);
+
             return Ok("Station Is Added");
+        }
+
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update(string StationName, [FromBody] StationDTO DTO)
+        {
+            var Station = await _StationServices.GetByName(StationName);
+            if (Station is null)
+                return NotFound($"No Station was found with {StationName}");
+
+
+            Station = _mapper.Map<Station>(DTO);
+            _StationServices.Update(Station);
+
+
+            return Ok(Station);
+        }
+
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> Delete(string StationName)
+        {
+            var Station = await _StationServices.GetByName(StationName);
+            if (Station == null)
+                return NotFound();
+
+            _StationServices.Delete(Station);
+
+            return Ok(Station);
         }
     }
 }

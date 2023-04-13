@@ -8,8 +8,7 @@ namespace Train_D.Profiles
     {
         public MappingProfile()
         {
-            CreateMap<Station, StationDTO>()
-                .ReverseMap();
+            CreateMap<Station, StationDTO>().ReverseMap();
         }
     }
 }
