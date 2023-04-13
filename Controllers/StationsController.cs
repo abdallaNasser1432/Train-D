@@ -58,8 +58,12 @@ namespace Train_D.Controllers
             if (Station is null)
                 return NotFound($"No Station was found with {StationName}");
 
-
-            Station = _mapper.Map<Station>(DTO);
+            Station.Latitude = DTO.Latitude;
+            Station.Longitude = DTO.Longitude;
+            Station.HoursOpen = DTO.HoursOpen;
+            Station.Address = DTO.Address;
+            Station.StationInfo = DTO.StationInfo;
+            Station.Phone = DTO.Phone;
             _StationServices.Update(Station);
 
 
