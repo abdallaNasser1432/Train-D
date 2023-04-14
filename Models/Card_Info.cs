@@ -9,8 +9,8 @@ namespace Train_D.Models
         [MaxLength(20)]
         public string CardNumber { get; set; }
 
-
-        public DateTime ExpDate { get; set; }
+        [Required,MaxLength(8)]
+        public string ExpDate { get; set; }
 
         [MaxLength(3), MinLength(3), Required]
         public string CVV { get; set; }

@@ -11,9 +11,6 @@ namespace Train_D.Data.Config
             builder.ToTable("Card_Info")
                 .HasKey(c => c.CardNumber);
 
-            builder.Property(t => t.ExpDate)
-                .HasColumnType("date");
-
             builder
                 .HasOne(u => u.User)
                 .WithOne(c => c.Card)
