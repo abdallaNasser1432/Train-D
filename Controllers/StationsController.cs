@@ -20,16 +20,18 @@ namespace Train_D.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var Stations = await _StationServices.GetAll();
             return Ok(Stations);
         }
 
-        [HttpGet("GetByName")]
-        public async Task<IActionResult> GetByName(string StationName)
+        [HttpGet("{StationName}")]
+        public async Task<IActionResult> GetByName([FromRoute]string StationName)
         {
+            if (StationName is null)
+                return BadRequest("you didn't enter StationName");
             var Station = await _StationServices.GetByName(StationName);
             if (Station == null)
                 return NotFound();
@@ -38,7 +40,7 @@ namespace Train_D.Controllers
 
         }
 
-        [HttpPost("Add")]
+        [HttpPost]
         public async Task<IActionResult> Add([FromBody] StationDTO DTO)
         {
             var Station = await _StationServices.GetByName(DTO.StationName);
@@ -51,9 +53,11 @@ namespace Train_D.Controllers
             return Ok("Station Is Added");
         }
 
-        [HttpPut("Update")]
-        public async Task<IActionResult> Update(string StationName, [FromBody] StationDTO DTO)
+        [HttpPut("{StationName}")]
+        public async Task<IActionResult> Update([FromRoute]string StationName, [FromBody] StationDTO DTO)
         {
+            if(StationName is null )
+                return BadRequest("you didn't enter StationName");
             var Station = await _StationServices.GetByName(StationName);
             if (Station is null)
                 return NotFound($"No Station was found with {StationName}");
@@ -70,9 +74,12 @@ namespace Train_D.Controllers
             return Ok(Station);
         }
 
-        [HttpDelete("Delete")]
-        public async Task<IActionResult> Delete(string StationName)
+        [HttpDelete("{StationName}")]
+        public async Task<IActionResult> Delete([FromRoute]string StationName)
         {
+            if (StationName is null)
+                return BadRequest("you didn't enter StationName");
+
             var Station = await _StationServices.GetByName(StationName);
             if (Station == null)
                 return NotFound();
