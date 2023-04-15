@@ -27,6 +27,8 @@ namespace Train_D
             //Add  AutoMapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            // Add Stripe Infrastructure
+            builder.Services.AddStripeInfrastructure(builder.Configuration);
 
             //Add JWT
             builder.Services.Configure<JWT>(builder.Configuration.GetSection(nameof(JWT)));
