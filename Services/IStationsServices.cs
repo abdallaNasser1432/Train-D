@@ -12,5 +12,6 @@ namespace Train_D.Services
         Task<Station> Add(Station station);
         Station Update(Station station);
         Station Delete(Station station);
+        bool IsExist(string stationName);
     }
 }
