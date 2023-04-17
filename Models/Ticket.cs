@@ -20,9 +20,9 @@ namespace Train_D.Models
 
         public decimal Amount { get; set; }
 
-        
+        public string PaymentId { get; set; }
 
-        
+
         public string UserId { get; set; }
         public int TrainId { get; set; }
         public int TripId { get; set; }
