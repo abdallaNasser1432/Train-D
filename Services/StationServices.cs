@@ -55,7 +55,8 @@ namespace Train_D.Services
 
         public bool IsExist(string stationName)
         {
-            return _context.Stations.Any(s => s.StationName == stationName);
+            return _context.Stations.Any(s=>s.StationName == stationName);
+
         }
     }
 }

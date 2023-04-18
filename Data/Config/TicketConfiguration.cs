@@ -15,6 +15,9 @@ namespace Train_D.Data.Config
             builder.Property(a => a.Amount)
                 .HasColumnType("money");
 
+            builder.Property(p => p.PaymentId)
+                .IsRequired();
+
             builder
                 .HasOne(t => t.Trip)
                 .WithMany(tk => tk.Tickets)

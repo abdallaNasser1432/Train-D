@@ -40,7 +40,7 @@ namespace Train_D
             );
             //Add Services
             builder.Services.AddScoped<IAuth, Auth>();
-            builder.Services.AddTransient<IStationsServices, StationsServices>();
+            builder.Services.AddScoped<IStationsServices, StationsServices>(); 
 
             //Add Authantications
             builder.Services.AddAuthentication(options =>

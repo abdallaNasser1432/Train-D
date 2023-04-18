@@ -56,8 +56,9 @@ namespace Train_D.Controllers
         }
 
         [HttpPut("{StationName}")]
-        [Authorize(Roles ="Admin")]
-        public IActionResult Update([FromRoute] string StationName, [FromBody] StationDTO DTO)
+
+        public IActionResult Update([FromRoute]string StationName, [FromBody] StationDTO DTO)
+
         {
             if (StationName is null)
                 return BadRequest("you didn't enter StationName");
