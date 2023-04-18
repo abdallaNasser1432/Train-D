@@ -16,12 +16,12 @@ namespace Train_D.Models
         
         public string Token { get; set; }
 
-        //public DateTime ExpiresOn { get; set; }
+        public DateTime ExpiresOn { get; set; }
 
-        [JsonIgnore] // to not return prop in API
-        public string RefreshToken { get; set; }
+        //[JsonIgnore] // to not return prop in API
+        //public string RefreshToken { get; set; }
 
-        public DateTime RefreshTokenExpiration { get; set; }
+        //public DateTime RefreshTokenExpiration { get; set; }
 
 
     }

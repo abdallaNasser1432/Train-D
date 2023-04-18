@@ -9,6 +9,8 @@ namespace Train_D.Profiles
         public MappingProfile()
         {
             CreateMap<Station, StationDTO>().ReverseMap();
+            CreateMap<RegisterModel, User>().ReverseMap();
+            CreateMap<RegisterModel, AuthModel>().ReverseMap();
         }
     }
 }

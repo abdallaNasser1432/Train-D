@@ -52,9 +52,11 @@ namespace Train_D.Services
             _context.SaveChanges();
             return station;
         }
+
         public bool IsExist(string stationName)
         {
             return _context.Stations.Any(s=>s.StationName == stationName);
+
         }
     }
 }
