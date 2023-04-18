@@ -57,24 +57,19 @@ namespace Train_D.Controllers
 
         [HttpPut("{StationName}")]
         [Authorize(Roles ="Admin")]
-        public async Task<IActionResult> Update([FromRoute]string StationName, [FromBody] StationDTO DTO)
+        public IActionResult Update([FromRoute] string StationName, [FromBody] StationDTO DTO)
         {
-            if(StationName is null )
+            if (StationName is null)
                 return BadRequest("you didn't enter StationName");
-            var Station = await _StationServices.GetByName(StationName);
-            if (Station is null)
+
+            if (!_StationServices.IsExist(StationName))
                 return NotFound($"No Station was found with {StationName}");
 
-            Station.Latitude = DTO.Latitude;
-            Station.Longitude = DTO.Longitude;
-            Station.HoursOpen = DTO.HoursOpen;
-            Station.Address = DTO.Address;
-            Station.StationInfo = DTO.StationInfo;
-            Station.Phone = DTO.Phone;
-            _StationServices.Update(Station);
+            var stationUpdate = _mapper.Map<Station>(DTO);
+            _StationServices.Update(stationUpdate);
 
 
-            return Ok(Station);
+            return Ok(stationUpdate);
         }
 
         [HttpDelete("{StationName}")]
