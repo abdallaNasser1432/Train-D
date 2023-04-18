@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Common;
 using Train_D.DTO;
@@ -23,68 +24,43 @@ namespace Train_D.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
+            
             var Result = await _auth.Register(model);
+            
             if (!Result.IsAuthenticated)
                 return BadRequest(Result.Message);
-
-            SetRefreshTokenInCookie(Result.RefreshToken, Result.RefreshTokenExpiration);
-            return Ok(new { Result.Token, Result.RefreshTokenExpiration }); // return RefreshToken and RefreshTokenExpiration
+            
+            return Ok(new {Result.Token});
         }
-            [HttpPost("Login")]
+
+        [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
+           
             var Result = await _auth.Login(model);
+            
             if (!Result.IsAuthenticated)
                 return BadRequest(Result.Message);
-
-            if (!string.IsNullOrEmpty(Result.RefreshToken))
-                SetRefreshTokenInCookie(Result.RefreshToken, Result.RefreshTokenExpiration);
-            return Ok(new { Result.Token, Result.RefreshTokenExpiration }); // return RefreshToken and RefreshTokenExpiration
+           
+            return Ok(new {Result.Token});
         }
 
-        [HttpGet("RefreshToken")]
-        public async Task<IActionResult> RefreshToken()
+        [HttpPost("AddRole")]
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> AddRole([FromBody] AddRoleModel model)
         {
-            var refreshToken = Request.Cookies["refreshToken"];
-            var Result = await _auth.RefreshToken(refreshToken);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            if(!Result.IsAuthenticated)
-                return BadRequest(Result);
-            SetRefreshTokenInCookie(Result.RefreshToken, Result.RefreshTokenExpiration);
+           var result =  await _auth.AddRole(model);
 
-            return Ok(Result);
-        }
-
-        [HttpPost("RevokeToken")]
-        public async Task<IActionResult> RevokeToken([FromBody] RevokeDTO dto)
-        {
-
-            var token = dto.Token ?? Request.Cookies["refreshToken"];
-
-            if (string.IsNullOrEmpty(token))
-                return BadRequest("Token Is Required!");
-            var Result = await _auth.RevokeToken(token);
-            if(!Result)
-                return BadRequest("Token Is Invalid!");
-            return Ok();
-        }
-
-        private void SetRefreshTokenInCookie(string refreshToken, DateTime expires)
-        {
-            var CookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = expires.ToLocalTime()
-            };
-
-            Response.Cookies.Append("refreshToken", refreshToken, CookieOptions);
+            if(!string.IsNullOrEmpty(result))
+                return BadRequest(result);
+          
+            return Ok(model);
         }
 
     }

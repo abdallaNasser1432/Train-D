@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Train_D.DTO;
@@ -41,6 +42,7 @@ namespace Train_D.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add([FromBody] StationDTO DTO)
         {
             var Station = await _StationServices.GetByName(DTO.StationName);
@@ -54,6 +56,7 @@ namespace Train_D.Controllers
         }
 
         [HttpPut("{StationName}")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Update([FromRoute]string StationName, [FromBody] StationDTO DTO)
         {
             if(StationName is null )
@@ -75,6 +78,7 @@ namespace Train_D.Controllers
         }
 
         [HttpDelete("{StationName}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute]string StationName)
         {
             if (StationName is null)
