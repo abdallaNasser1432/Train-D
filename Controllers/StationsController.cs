@@ -56,7 +56,7 @@ namespace Train_D.Controllers
         }
 
         [HttpPut("{StationName}")]
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Update([FromRoute]string StationName, [FromBody] StationDTO DTO)
 
         {
