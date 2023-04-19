@@ -29,9 +29,9 @@ namespace Train_D.Services
 
         public async Task<AuthModel> Register(RegisterModel model)
         {
-            if (await _userManager.FindByEmailAsync(model.Email) is not null)
+            if (await _userManager.Users.AnyAsync(e => e.Email == model.Email))
                 return new AuthModel { Message = "Email is already Registered" };
-            if (await _userManager.FindByNameAsync(model.UserName) is not null)
+            if (await _userManager.Users.AnyAsync(u => u.NormalizedUserName == model.UserName))
                 return new AuthModel { Message = "UserName is already Registered" };
 
             var user = _mapper.Map<User>(model);
