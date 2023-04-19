@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -7,8 +8,6 @@ using System.Security.Claims;
 using System.Text;
 using Train_D.Helper;
 using Train_D.Models;
-using System.Security.Cryptography;
-using AutoMapper;
 
 namespace Train_D.Services
 {

@@ -7,7 +7,7 @@ namespace Train_D.Services
     public interface IStationsServices
     {
 
-        Task<IEnumerable<Station>> GetAll();
+        Task<IEnumerable<string>> GetAll();
         Task<Station> GetByName(string stationName);
         Task<Station> Add(Station station);
         Station Update(Station station);

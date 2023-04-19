@@ -19,9 +19,9 @@ namespace Train_D.Services
         }
 
 
-        public async Task<IEnumerable<Station>> GetAll()
+        public async Task<IEnumerable<String>> GetAll()
         {
-            return await _context.Stations.ToListAsync();
+            return await _context.Stations.Select(s => s.StationName).ToListAsync();
         }
 
         public async Task<Station> GetByName(string stationName)
