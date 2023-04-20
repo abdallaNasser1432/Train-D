@@ -114,9 +114,10 @@ namespace Train_D.Services
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim("UserName", user.UserName),
+                new Claim("Email", user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                
 
             }
             .Union(userClaims)
