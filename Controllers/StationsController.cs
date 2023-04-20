@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Train_D.DTO;
 using Train_D.Models;
@@ -25,18 +24,19 @@ namespace Train_D.Controllers
         public async Task<IActionResult> GetAll()
         {
             var Stations = await _StationServices.GetAll();
-            return Ok(Stations);
+            var SationNamesGroup = _StationServices.GroupedSations(Stations.ToList());
+            return Ok(SationNamesGroup);
         }
 
         [HttpGet("{StationName}")]
-        public async Task<IActionResult> GetByName([FromRoute]string StationName)
+        public async Task<IActionResult> GetByName([FromRoute] string StationName)
         {
             if (StationName is null)
                 return BadRequest("you didn't enter StationName");
             var Station = await _StationServices.GetByName(StationName);
             if (Station == null)
                 return NotFound();
-            
+
             return Ok(Station);
 
         }
@@ -57,7 +57,7 @@ namespace Train_D.Controllers
 
         [HttpPut("{StationName}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Update([FromRoute]string StationName, [FromBody] StationDTO DTO)
+        public IActionResult Update([FromRoute] string StationName, [FromBody] StationDTO DTO)
 
         {
             if (StationName is null)
@@ -75,7 +75,7 @@ namespace Train_D.Controllers
 
         [HttpDelete("{StationName}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete([FromRoute]string StationName)
+        public async Task<IActionResult> Delete([FromRoute] string StationName)
         {
             if (StationName is null)
                 return BadRequest("you didn't enter StationName");
