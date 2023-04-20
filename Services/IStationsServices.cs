@@ -13,5 +13,6 @@ namespace Train_D.Services
         Station Update(Station station);
         Station Delete(Station station);
         bool IsExist(string stationName);
+        Dictionary<char, object> GroupedSations(List<string> stations);
     }
 }

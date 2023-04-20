@@ -5,6 +5,7 @@ using Train_D.Models;
 using Train_D.Data;
 using Train_D.DTO;
 using AutoMapper;
+using Newtonsoft.Json.Linq;
 
 namespace Train_D.Services
 {
@@ -57,6 +58,18 @@ namespace Train_D.Services
         {
             return _context.Stations.Any(s=>s.StationName == stationName);
 
+        }
+
+        public Dictionary<char, object> GroupedSations(List<string> stations)
+        {
+            var values = new Dictionary<char, object>();
+            var station = stations.GroupBy(s => s[0])
+                .OrderBy(c => c.Key);
+            foreach (var item in station)
+            {
+                values.Add(item.Key, item.Select(x => x));
+            }
+            return values;
         }
     }
 }
