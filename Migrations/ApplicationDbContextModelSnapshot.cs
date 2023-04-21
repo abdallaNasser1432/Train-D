@@ -240,10 +240,10 @@ namespace Train_D.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Latitude")
-                        .HasColumnType("DECIMAL(4,12)");
+                        .HasColumnType("DECIMAL(12,9)");
 
                     b.Property<decimal>("Longitude")
-                        .HasColumnType("DECIMAL(4,12)");
+                        .HasColumnType("DECIMAL(12,9)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -583,6 +583,42 @@ namespace Train_D.Migrations
                     b.Navigation("StationEnd");
 
                     b.Navigation("Train");
+                });
+
+            modelBuilder.Entity("Train_D.Models.User", b =>
+                {
+                    b.OwnsMany("Train_D.Models.RefreshTokens", "RefreshTokens", b1 =>
+                        {
+                            b1.Property<string>("UserId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<DateTime>("CreatedOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime>("ExpiresOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime?>("RevokOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("Token")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("UserId", "Id");
+
+                            b1.ToTable("RefreshTokens");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("RefreshTokens");
                 });
 
             modelBuilder.Entity("Train_D.Models.Class", b =>

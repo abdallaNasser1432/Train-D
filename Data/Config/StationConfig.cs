@@ -11,9 +11,9 @@ namespace Train_D.Data.Config
             builder.HasKey(s => s.StationName);
 
             builder.Property(l => l.Latitude)
-                .HasColumnType("DECIMAL(4,12)");
+                .HasColumnType("DECIMAL(12,9)");
             builder.Property(l => l.Longitude)
-                .HasColumnType("DECIMAL(4,12)");
+                .HasColumnType("DECIMAL(12,9)");
 
             builder.Property(a => a.Address)
                 .IsRequired();
