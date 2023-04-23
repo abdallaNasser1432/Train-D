@@ -16,7 +16,7 @@ namespace Train_D.Migrations
                 columns: table => new
                 {
                     TicketId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:Identity", "1000, 77"),
                     Date = table.Column<DateTime>(type: "date", nullable: false),
                     SeatNumber = table.Column<int>(type: "int", nullable: false),
                     Coach = table.Column<int>(type: "int", nullable: false),
