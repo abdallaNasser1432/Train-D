@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Google.Apis.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Common;
@@ -46,6 +47,21 @@ namespace Train_D.Controllers
                 return BadRequest(Result.Message);
            
             return Ok(new {Result.Token});
+        }
+
+        [HttpPost("LoginWithGoogle")]
+        public async Task<IActionResult> LoginWithGoogle([FromBody] string credential)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var Result = await _auth.LoginGoogle(credential);
+
+            if (!Result.IsAuthenticated)
+                return BadRequest(Result.Message);
+
+            return Ok(new { Result.Token });
+
         }
 
         [HttpPost("AddRole")]

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -117,7 +118,7 @@ namespace Train_D.Services
                 new Claim("UserName", user.UserName),
                 new Claim("Email", user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                
+
 
             }
             .Union(userClaims)
@@ -134,6 +135,74 @@ namespace Train_D.Services
                 signingCredentials: signingCredentials);
 
             return jwtSecurityToken;
+        }
+
+        public async Task<AuthModel> LoginGoogle(string credential)
+        {
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new List<string> { this._jwt.GoogleClientId }
+            };
+
+            var payload = await GoogleJsonWebSignature.ValidateAsync(credential, settings);
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == payload.Email);
+
+            if (user is null)
+            {
+                return (await RegisterGoogle(payload));
+            }
+            var authModel = new AuthModel();
+            var jwtSecurityToken = await CreateJwtToken(user);
+            var rolesList = await _userManager.GetRolesAsync(user);
+
+            authModel.IsAuthenticated = true;
+            authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            authModel.Email = user.Email;
+            authModel.UserName = user.UserName;
+            authModel.ExpiresOn = jwtSecurityToken.ValidTo;
+            authModel.Roles = rolesList.ToList();
+
+            return authModel;
+        }
+        private async Task<AuthModel> RegisterGoogle(GoogleJsonWebSignature.Payload payload)
+        {
+
+            var user = new User // i'll apply autoMapper in future 
+            {
+                Email = payload.Email,
+                UserName = payload.Email.Substring(0, payload.Email.IndexOf("@")),
+                FirstName = payload.GivenName,
+                LastName = payload.FamilyName
+            };
+
+            var result = await _userManager.CreateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                var errors = string.Empty;
+
+                foreach (var error in result.Errors)
+                    errors += $"{error.Description},";
+
+                return new AuthModel { Message = errors };
+            }
+
+            await _userManager.AddToRoleAsync(user, "User");
+
+            var jwtSecurityToken = await CreateJwtToken(user);
+
+            // var res = _mapper.Map<AuthModel>(model);
+            return new AuthModel
+            {
+                Email = user.Email,
+                ExpiresOn = jwtSecurityToken.ValidTo,
+                IsAuthenticated = true,
+                Roles = new List<string> { "User" },
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                UserName = user.UserName
+            };
+
         }
     }
 }
