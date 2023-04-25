@@ -165,16 +165,20 @@ namespace Train_D.Services
 
             return authModel;
         }
+
         private async Task<AuthModel> RegisterGoogle(GoogleJsonWebSignature.Payload payload)
         {
 
-            var user = new User // i'll apply autoMapper in future 
-            {
-                Email = payload.Email,
-                UserName = payload.Email.Substring(0, payload.Email.IndexOf("@")),
-                FirstName = payload.GivenName,
-                LastName = payload.FamilyName
-            };
+
+            var user = _mapper.Map<User>(payload);
+
+            //var user = new User // i'll apply autoMapper in future 
+            //{
+            //    Email = payload.Email,
+            //    UserName = payload.Email.Substring(0, payload.Email.IndexOf("@")),
+            //    FirstName = payload.GivenName,
+            //    LastName = payload.FamilyName
+            //};
 
             var result = await _userManager.CreateAsync(user);
 
