@@ -117,6 +117,7 @@ namespace Train_D.Services
             {
                 new Claim("UserName", user.UserName),
                 new Claim("Email", user.Email),
+                new Claim("UserId", user.Id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
 
 
