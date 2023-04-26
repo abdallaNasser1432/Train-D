@@ -8,6 +8,7 @@ using Train_D.Data;
 using Train_D.Helper;
 using Train_D.Models;
 using Train_D.Services;
+using Train_D.Services.Contract;
 
 namespace Train_D
 {
@@ -40,7 +41,9 @@ namespace Train_D
             );
             //Add Services
             builder.Services.AddScoped<IAuth, Auth>();
-            builder.Services.AddScoped<IStationsServices, StationsServices>(); 
+            builder.Services.AddScoped<IStationsServices, StationsServices>();
+            builder.Services.AddScoped<IProfileService, ProfileService>();
+
 
             //Add Authantications
             builder.Services.AddAuthentication(options =>
