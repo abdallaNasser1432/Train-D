@@ -29,10 +29,8 @@ namespace Train_D.Services
 
         public async Task<AuthModel> Register(RegisterModel model)
         {
-            if (await _userManager.Users.AnyAsync(e => e.Email == model.Email))
-                return new AuthModel { Message = "Email is already Registered" };
-            if (await _userManager.Users.AnyAsync(u => u.NormalizedUserName == model.UserName))
-                return new AuthModel { Message = "UserName is already Registered" };
+            if (await _userManager.Users.AnyAsync(e => (e.Email == model.Email)||(e.NormalizedUserName == model.UserName)))
+                return new AuthModel { Message = "Email or Username are already Registered" };
 
             var user = _mapper.Map<User>(model);
 
@@ -52,7 +50,7 @@ namespace Train_D.Services
 
             var jwtSecurityToken = await CreateJwtToken(user);
 
-            // var res = _mapper.Map<AuthModel>(model);
+           
             return new AuthModel
             {
                 Email = user.Email,
@@ -62,7 +60,7 @@ namespace Train_D.Services
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 UserName = user.UserName
             };
-            //return res;
+            
         }
 
         public async Task<AuthModel> Login(LoginModel model)
@@ -173,14 +171,6 @@ namespace Train_D.Services
 
             var user = _mapper.Map<User>(payload);
 
-            //var user = new User // i'll apply autoMapper in future 
-            //{
-            //    Email = payload.Email,
-            //    UserName = payload.Email.Substring(0, payload.Email.IndexOf("@")),
-            //    FirstName = payload.GivenName,
-            //    LastName = payload.FamilyName
-            //};
-
             var result = await _userManager.CreateAsync(user);
 
             if (!result.Succeeded)
@@ -197,7 +187,7 @@ namespace Train_D.Services
 
             var jwtSecurityToken = await CreateJwtToken(user);
 
-            // var res = _mapper.Map<AuthModel>(model);
+            
             return new AuthModel
             {
                 Email = user.Email,

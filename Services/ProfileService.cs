@@ -21,7 +21,7 @@ namespace Train_D.Services
         {
             try
             {
-                var User = await _context.Users.SingleOrDefaultAsync(u => u.UserName == UserName);
+                var User = await _context.Users.AsNoTracking().SingleOrDefaultAsync(u => u.UserName == UserName);
                 var userData = _mapper.Map<ProfileReadDto>(User);
                 return userData;
             }
@@ -53,7 +53,6 @@ namespace Train_D.Services
             {
                 var User = await _context.Users.SingleOrDefaultAsync(u => u.UserName == UserName);
                 User.Image = Image;
-                _context.Update(User);
                 await _context.SaveChangesAsync();
                 return Image;
             }
