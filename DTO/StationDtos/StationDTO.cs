@@ -3,7 +3,7 @@
     public class StationDTO
     {
 
-        public string StationName { get; set; }
+        
 
         public string StationInfo { get; set; }
         

@@ -10,9 +10,8 @@ namespace Train_D.Services
         Task<IEnumerable<string>> GetAll();
         Task<Station> GetByName(string stationName);
         Task<Station> Add(Station station);
-        Station Update(Station station);
+        Task<bool> Update();
         Station Delete(Station station);
-        bool IsExist(string stationName);
         Dictionary<char, object> GroupedSations(List<string> stations);
     }
 }

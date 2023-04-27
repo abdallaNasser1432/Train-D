@@ -25,7 +25,7 @@ namespace Train_D.Services
 
         public async Task<Station> GetByName(string stationName)
         {
-            return await _context.Stations.AsNoTracking().SingleOrDefaultAsync(m => m.StationName == stationName);
+            return await _context.Stations.SingleOrDefaultAsync(m => m.StationName == stationName);
         }
 
         public async Task<Station> Add(Station station)
@@ -42,17 +42,18 @@ namespace Train_D.Services
             return station;
         }
 
-        public Station Update(Station station)
+        public async Task<bool> Update()
         {
-            _context.Update(station);
-            _context.SaveChanges();
-            return station;
-        }
-
-        public bool IsExist(string stationName)
-        {
-            return _context.Stations.Any(s=>s.StationName == stationName);
-
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch 
+            {
+                return false;
+            }
+            
         }
 
         public Dictionary<char, object> GroupedSations(List<string> stations)
