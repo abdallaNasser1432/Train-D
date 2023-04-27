@@ -15,7 +15,7 @@ namespace Train_D.Models
 
         public int TrainId { get; set; }
 
-        public virtual Train Train { get; set; }
+        public  Train Train { get; set; }
         public List<ClassTrip> ClassTrips { get; set; }
 
     }

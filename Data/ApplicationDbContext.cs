@@ -25,12 +25,12 @@ namespace Train_D.Data
             builder.Entity<IdentityRoleClaim<string>>(entity => { entity.ToTable("RoleClaims"); });
         }
 
-        public virtual DbSet<Station> Stations { get; set; }
-        public virtual DbSet<Card_Info> Cards { get; set; }
-        public virtual DbSet<Train> Trains { get; set; }
-        public virtual DbSet<Class> Classes { get; set; }
-        public virtual DbSet<Trip> Trips { get; set; }
-        public virtual DbSet<Ticket> Tickets { get; set; }
-        public virtual DbSet<ClassTrip> ClassTrips { get; set; }
+        public  DbSet<Station> Stations { get; set; }
+        public  DbSet<Card_Info> Cards { get; set; }
+        public  DbSet<Train> Trains { get; set; }
+        public  DbSet<Class> Classes { get; set; }
+        public  DbSet<Trip> Trips { get; set; }
+        public  DbSet<Ticket> Tickets { get; set; }
+        public  DbSet<ClassTrip> ClassTrips { get; set; }
     }
 }

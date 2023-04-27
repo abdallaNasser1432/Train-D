@@ -27,8 +27,8 @@ namespace Train_D.Models
         public int TrainId { get; set; }
         public int TripId { get; set; }
 
-        public virtual Trip Trip { get; set; }
-        public virtual User User { get; set; }
+        public  Trip Trip { get; set; }
+        public  User User { get; set; }
 
     }
 }
