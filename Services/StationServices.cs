@@ -13,23 +13,20 @@ namespace Train_D.Services
     {
         private readonly ApplicationDbContext _context;
 
-
         public StationsServices(ApplicationDbContext context)
         {
             _context = context;
         }
 
-
         public async Task<IEnumerable<String>> GetAll()
         {
-            return await _context.Stations.Select(s => s.StationName).ToListAsync();
+            return await _context.Stations.AsNoTracking().Select(s => s.StationName).ToListAsync();
         }
 
         public async Task<Station> GetByName(string stationName)
         {
-            return await _context.Stations.SingleOrDefaultAsync(m => m.StationName == stationName);
+            return await _context.Stations.AsNoTracking().SingleOrDefaultAsync(m => m.StationName == stationName);
         }
-
 
         public async Task<Station> Add(Station station)
         {
@@ -37,7 +34,6 @@ namespace Train_D.Services
             _context.SaveChanges();
             return station;
         }
-
         
         public Station Delete(Station station)
         {
@@ -45,7 +41,6 @@ namespace Train_D.Services
             _context.SaveChanges();
             return station;
         }
-
 
         public Station Update(Station station)
         {
