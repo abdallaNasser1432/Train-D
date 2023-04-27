@@ -24,10 +24,10 @@ namespace Train_D.Models
         public string City { get; set; }
 
         // (one to one ) relationship with card_info Table
-        public virtual Card_Info Card { get; set; }
+        public Card_Info Card { get; set; }
 
         // (many to one ) relationship with Tickets Table
-        public virtual List<Ticket> Tickets { get; set; }
+        public List<Ticket> Tickets { get; set; }
 
         #nullable enable
         public byte[]? Image { get; set; }

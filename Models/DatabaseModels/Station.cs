@@ -23,10 +23,10 @@ namespace Train_D.Models
 
         // (many to one) relationship with Trip Table
         [JsonIgnore]
-        public virtual List<Trip> TripsStart { get; set; }
+        public  List<Trip> TripsStart { get; set; }
 
         // (many to one) relationship with Trip Table
         [JsonIgnore]
-        public virtual List<Trip> TripsEnd { get; set; }
+        public  List<Trip> TripsEnd { get; set; }
     }
 }
