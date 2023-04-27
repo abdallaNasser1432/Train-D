@@ -50,8 +50,6 @@ namespace Train_D.Services
             return new StripeCustomer(createdCustomer.Name, createdCustomer.Email, createdCustomer.Id);
         }
 
-
-
         public async Task<StripePayment> AddStripePaymentAsync(AddStripePayment payment, CancellationToken ct)
         {
             // Set the options for the payment we would like to create at Stripe

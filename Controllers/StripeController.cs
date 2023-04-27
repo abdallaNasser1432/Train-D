@@ -17,9 +17,7 @@ namespace Train_D.Controllers
         }
 
         [HttpPost("customer/add")]
-        public async Task<ActionResult<StripeCustomer>> AddStripeCustomer(
-            [FromBody] AddStripeCustomer customer,
-            CancellationToken ct)
+        public async Task<ActionResult<StripeCustomer>> AddStripeCustomer([FromBody] AddStripeCustomer customer, CancellationToken ct)
         {
             StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(
                 customer,
@@ -29,9 +27,7 @@ namespace Train_D.Controllers
         }
 
         [HttpPost("payment/add")]
-        public async Task<ActionResult<StripePayment>> AddStripePayment(
-            [FromBody] AddStripePayment payment,
-            CancellationToken ct)
+        public async Task<ActionResult<StripePayment>> AddStripePayment([FromBody] AddStripePayment payment,CancellationToken ct)
         {
             StripePayment createdPayment = await _stripeService.AddStripePaymentAsync(
                 payment,
