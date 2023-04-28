@@ -29,7 +29,7 @@ namespace Train_D.Services
 
         public async Task<AuthModel> Register(RegisterModel model)
         {
-            if (await _userManager.Users.AnyAsync(e => (e.Email == model.Email)||(e.NormalizedUserName == model.UserName)))
+            if (await _userManager.Users.AnyAsync(e => (e.Email == model.Email) || (e.NormalizedUserName == model.UserName)))
                 return new AuthModel { Message = "Email or Username are already Registered" };
 
             var user = _mapper.Map<User>(model);
@@ -50,7 +50,7 @@ namespace Train_D.Services
 
             var jwtSecurityToken = await CreateJwtToken(user);
 
-           
+
             return new AuthModel
             {
                 Email = user.Email,
@@ -58,9 +58,9 @@ namespace Train_D.Services
                 IsAuthenticated = true,
                 Roles = new List<string> { "User" },
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                UserName = user.UserName
+                UserName = user.UserName,
+                Message = "Register Successfully"
             };
-            
         }
 
         public async Task<AuthModel> Login(LoginModel model)
@@ -187,7 +187,7 @@ namespace Train_D.Services
 
             var jwtSecurityToken = await CreateJwtToken(user);
 
-            
+
             return new AuthModel
             {
                 Email = user.Email,
