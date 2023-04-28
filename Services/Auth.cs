@@ -104,31 +104,43 @@ namespace Train_D.Services
 
         public async Task<AuthModel> LoginGoogle(string credential)
         {
-            var settings = new GoogleJsonWebSignature.ValidationSettings()
-            {
-                Audience = new List<string> { this._jwt.GoogleClientId }
-            };
-
-            var payload = await GoogleJsonWebSignature.ValidateAsync(credential, settings);
-
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == payload.Email);
-
-            if (user is null)
-            {
-                return (await RegisterGoogle(payload));
-            }
             var authModel = new AuthModel();
-            var jwtSecurityToken = await CreateJwtToken(user);
-            var rolesList = await _userManager.GetRolesAsync(user);
+            try
+            {
+                
+                var settings = new GoogleJsonWebSignature.ValidationSettings()
+                {
+                    Audience = new List<string> { this._jwt.GoogleClientId }
+                };
 
-            authModel.IsAuthenticated = true;
-            authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            authModel.Email = user.Email;
-            authModel.UserName = user.UserName;
-            authModel.ExpiresOn = jwtSecurityToken.ValidTo;
-            authModel.Roles = rolesList.ToList();
+                var payload = await GoogleJsonWebSignature.ValidateAsync(credential, settings);
 
-            return authModel;
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == payload.Email);
+
+                if (user is null)
+                {
+                    return (await RegisterGoogle(payload));
+                }
+
+                var jwtSecurityToken = await CreateJwtToken(user);
+                var rolesList = await _userManager.GetRolesAsync(user);
+
+                authModel.IsAuthenticated = true;
+                authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+                authModel.Email = user.Email;
+                authModel.UserName = user.UserName;
+                authModel.ExpiresOn = jwtSecurityToken.ValidTo;
+                authModel.Roles = rolesList.ToList();
+
+                return authModel;
+            }
+            catch 
+            {
+
+                authModel.Message = "invaild token ";
+                return authModel;
+            }
+            
         }
 
         private async Task<JwtSecurityToken> CreateJwtToken(User user)

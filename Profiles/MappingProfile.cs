@@ -25,7 +25,7 @@ namespace Train_D.Profiles
             CreateMap<GoogleJsonWebSignature.Payload, User>()
                 .ForMember(dest => dest.UserName, src => src.MapFrom(src => src.Email.Substring(0, src.Email.IndexOf("@"))))
                 .ForMember(dest => dest.FirstName, src => src.MapFrom(src => src.GivenName))
-                .ForMember(dest => dest.FirstName, src => src.MapFrom(src => src.GivenName));
+                .ForMember(dest => dest.LastName, src => src.MapFrom(src => src.FamilyName));
 
             #endregion
 
