@@ -53,12 +53,8 @@ namespace Train_D.Services
 
             return new AuthModel
             {
-                Email = user.Email,
-                ExpiresOn = jwtSecurityToken.ValidTo,
                 IsAuthenticated = true,
-                Roles = new List<string> { "User" },
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                UserName = user.UserName,
                 Message = "Register Successfully"
             };
         }
@@ -76,14 +72,10 @@ namespace Train_D.Services
             }
 
             var jwtSecurityToken = await CreateJwtToken(user);
-            var rolesList = await _userManager.GetRolesAsync(user);
+           
 
             authModel.IsAuthenticated = true;
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            authModel.Email = user.Email;
-            authModel.UserName = user.UserName;
-            authModel.ExpiresOn = jwtSecurityToken.ValidTo;
-            authModel.Roles = rolesList.ToList();
 
             return authModel;
         }
@@ -123,14 +115,9 @@ namespace Train_D.Services
                 }
 
                 var jwtSecurityToken = await CreateJwtToken(user);
-                var rolesList = await _userManager.GetRolesAsync(user);
 
                 authModel.IsAuthenticated = true;
                 authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-                authModel.Email = user.Email;
-                authModel.UserName = user.UserName;
-                authModel.ExpiresOn = jwtSecurityToken.ValidTo;
-                authModel.Roles = rolesList.ToList();
 
                 return authModel;
             }
@@ -145,7 +132,6 @@ namespace Train_D.Services
 
         private async Task<JwtSecurityToken> CreateJwtToken(User user)
         {
-            var userClaims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
             var roleClaims = new List<Claim>();
 
@@ -161,7 +147,6 @@ namespace Train_D.Services
 
 
             }
-            .Union(userClaims)
             .Union(roleClaims);
 
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.SecretKey));
@@ -202,12 +187,8 @@ namespace Train_D.Services
 
             return new AuthModel
             {
-                Email = user.Email,
-                ExpiresOn = jwtSecurityToken.ValidTo,
                 IsAuthenticated = true,
-                Roles = new List<string> { "User" },
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                UserName = user.UserName,
                 Message = "Register Successfully"
             };
 
