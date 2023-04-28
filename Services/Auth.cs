@@ -195,7 +195,8 @@ namespace Train_D.Services
                 IsAuthenticated = true,
                 Roles = new List<string> { "User" },
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                UserName = user.UserName
+                UserName = user.UserName,
+                Message = "Register Successfully"
             };
 
         }

@@ -1,9 +1,6 @@
-﻿using Google.Apis.Auth;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Common;
-using Train_D.DTO;
+using Microsoft.IdentityModel.Tokens;
 using Train_D.Models;
 using Train_D.Services;
 
@@ -26,13 +23,13 @@ namespace Train_D.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            
+
             var Result = await _auth.Register(model);
-            
+
             if (!Result.IsAuthenticated)
                 return BadRequest(Result.Message);
-            
-            return Ok(new {Result.Token , Result.Message});
+
+            return Ok(new { Result.Token, Result.Message });
         }
 
         [HttpPost("Login")]
@@ -40,13 +37,13 @@ namespace Train_D.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-           
+
             var Result = await _auth.Login(model);
-            
+
             if (!Result.IsAuthenticated)
                 return BadRequest(Result.Message);
-           
-            return Ok(new {Result.Token});
+
+            return Ok(new { Result.Token });
         }
 
         [HttpPost("LoginWithGoogle")]
@@ -60,22 +57,25 @@ namespace Train_D.Controllers
             if (!Result.IsAuthenticated)
                 return BadRequest(Result.Message);
 
+            if (!Result.Message.IsNullOrEmpty())
+                return Ok(new { Result.Token, Result.Message });
+
             return Ok(new { Result.Token });
 
         }
 
         [HttpPost("AddRole")]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddRole([FromBody] AddRoleModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-           var result =  await _auth.AddRole(model);
+            var result = await _auth.AddRole(model);
 
-            if(!string.IsNullOrEmpty(result))
+            if (!string.IsNullOrEmpty(result))
                 return BadRequest(result);
-          
+
             return Ok(model);
         }
 
