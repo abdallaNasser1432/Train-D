@@ -2,17 +2,19 @@
 using Google.Apis.Auth;
 using Train_D.DTO;
 using Train_D.DTO.ProfileDtos;
+using Train_D.DTO.StationDtos;
 using Train_D.Models;
 
 namespace Train_D.Profiles
 {
-    public class MappingProfile:Profile
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {
             #region StationMap
-
-            CreateMap<Station, StationDTO>().ReverseMap();
+            
+            CreateMap<Station, StationAddDto>().ReverseMap();
+            CreateMap<Station , StationDTO>().ReverseMap();
 
             #endregion
 
@@ -33,8 +35,6 @@ namespace Train_D.Profiles
             CreateMap<User, ProfileReadDto>();
 
             #endregion
-
-
 
         }
     }

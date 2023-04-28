@@ -53,7 +53,9 @@ namespace Train_D.Controllers
             var newStation = _mapper.Map<Station>(DTO);
             await _StationServices.Add(newStation);
 
-            return Ok("Station Is Added");
+            string Message = "Station Is Added";
+
+            return Ok(new {Message});
         }
 
         [HttpPut("{StationName}")]
@@ -90,7 +92,9 @@ namespace Train_D.Controllers
 
             _StationServices.Delete(Station);
 
-            return Ok(Station);
+            string Message = $"Station {StationName} Is Deleted";
+
+            return Ok(new { Message });
         }
     }
 }
