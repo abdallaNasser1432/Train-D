@@ -32,7 +32,7 @@ namespace Train_D.Controllers
             if (!Result.IsAuthenticated)
                 return BadRequest(Result.Message);
             
-            return Ok(new {Result.Token});
+            return Ok(new {Result.Token , Result.Message});
         }
 
         [HttpPost("Login")]
