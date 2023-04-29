@@ -33,7 +33,7 @@ namespace Train_D.Controllers
         public async Task<IActionResult> GetByName([FromRoute] string StationName)
         {
             if (StationName is null)
-                return BadRequest(new { massage = "you didn't enter StationName" });
+                return BadRequest(new { Message = "you didn't enter StationName" });
             var Station = await _StationServices.GetByName(StationName);
             if (Station == null)
                 return NotFound();
@@ -47,7 +47,7 @@ namespace Train_D.Controllers
         public async Task<IActionResult> Add([FromBody] StationAddDto DTO)
         {
             if (!_StationServices.IsExist(DTO.StationName))
-                return BadRequest(new { massage = "Station Is Already Added" });
+                return BadRequest(new { Message = "Station Is Already Added" });
 
             var newStation = _mapper.Map<Station>(DTO);
             await _StationServices.Add(newStation);
@@ -83,7 +83,7 @@ namespace Train_D.Controllers
         public async Task<IActionResult> Delete([FromRoute] string StationName)
         {
             if (StationName is null)
-                return BadRequest(new { massage = "you didn't enter StationName" });
+                return BadRequest(new { Message = "you didn't enter StationName" });
 
             var Station = await _StationServices.GetByName(StationName);
             if (Station == null)

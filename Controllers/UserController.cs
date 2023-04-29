@@ -27,7 +27,7 @@ namespace Train_D.Controllers
             var Result = await _auth.Register(model);
 
             if (!Result.IsAuthenticated)
-                return BadRequest(new { massage = Result.Message });
+                return BadRequest(new { Message = Result.Message });
 
             return Ok(new { Result.Token, Result.Message });
         }
@@ -41,7 +41,7 @@ namespace Train_D.Controllers
             var Result = await _auth.Login(model);
 
             if (!Result.IsAuthenticated)
-                return BadRequest(new { massage = Result.Message });
+                return BadRequest(new { Message = Result.Message });
 
             return Ok(new { Result.Token });
         }
@@ -55,7 +55,7 @@ namespace Train_D.Controllers
             var Result = await _auth.LoginGoogle(credential);
 
             if (!Result.IsAuthenticated)
-                return BadRequest(new { massage = Result.Message });
+                return BadRequest(new { Message = Result.Message });
 
             if (!Result.Message.IsNullOrEmpty())
                 return Ok(new { Result.Token, Result.Message });
