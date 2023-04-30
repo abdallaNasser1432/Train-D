@@ -21,7 +21,7 @@ namespace Train_D.Services
         {
             try
             {
-                var User = await _context.Users.AsNoTracking().SingleOrDefaultAsync(u => u.UserName == UserName);
+                var User = await _context.Users.AsNoTracking().SingleOrDefaultAsync(u => u.NormalizedUserName == UserName);
                 var userData = _mapper.Map<ProfileReadDto>(User);
                 return userData;
             }
@@ -35,7 +35,7 @@ namespace Train_D.Services
         {
             try
             {
-                var User = await _context.Users.SingleOrDefaultAsync(u => u.UserName == UserName);
+                var User = await _context.Users.SingleOrDefaultAsync(u => u.NormalizedUserName == UserName);
                 _mapper.Map(data, User);
                 await _context.SaveChangesAsync();
                 return data;
@@ -51,7 +51,7 @@ namespace Train_D.Services
         {
             try
             {
-                var User = await _context.Users.SingleOrDefaultAsync(u => u.UserName == UserName);
+                var User = await _context.Users.SingleOrDefaultAsync(u => u.NormalizedUserName == UserName);
                 User.Image = Image;
                 await _context.SaveChangesAsync();
                 return Image;
