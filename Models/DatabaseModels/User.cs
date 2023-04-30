@@ -18,9 +18,8 @@ namespace Train_D.Models
         [NotMapped]
         public string Password { get; set; }
         
-        public DateTime? BirthDay { get; set; }
 
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string City { get; set; }
 
         // (one to one ) relationship with card_info Table

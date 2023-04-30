@@ -23,8 +23,6 @@ namespace Train_D.Data.Config
             builder.HasIndex(u => u.Email)
                 .IsUnique();
 
-            builder.Property(b => b.BirthDay)
-                .HasColumnType("date");
         }
     }
 }
