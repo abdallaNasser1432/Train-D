@@ -16,8 +16,7 @@ namespace Train_D.Data.Config
             builder
                 .HasOne(t => t.Trip)
                 .WithMany(c => c.ClassTrips)
-                .HasForeignKey(t => t.TripId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(t => t.TripId);
 
             builder
                 .HasOne(c => c.Class)

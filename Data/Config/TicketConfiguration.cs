@@ -20,8 +20,7 @@ namespace Train_D.Data.Config
 
             builder
                 .HasOne(t => t.Trip)
-                .WithMany(tk => tk.Tickets)
-                .OnDelete(DeleteBehavior.Restrict);
+                .WithMany(tk => tk.Tickets);
 
             builder
                 .HasOne(t => t.User)
