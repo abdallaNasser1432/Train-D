@@ -13,12 +13,15 @@ namespace Train_D.Data.Config
                 .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
             builder.Property(u => u.Email)
-                .UseCollation("SQL_Latin1_General_CP1_CS_AS");
+                .UseCollation("SQL_Latin1_General_CP1_CS_AS")
+                .IsRequired();
 
             builder.Property(u => u.NormalizedUserName)
                 .UseCollation("SQL_Latin1_General_CP1_CS_AS")
                 .IsRequired();
 
+            builder.HasIndex(u => u.Email)
+                .IsUnique();
 
             builder.Property(b => b.BirthDay)
                 .HasColumnType("date");
