@@ -29,7 +29,7 @@ namespace Train_D.Services
 
         public async Task<AuthModel> Register(RegisterModel model)
         {
-            if (await _userManager.Users.AnyAsync(e => (e.Email == model.Email) || (e.NormalizedUserName == model.UserName)))
+            if (await _userManager.Users.AnyAsync(e => (e.NormalizedUserName == model.UserName) || (e.Email == model.Email)))
                 return new AuthModel { Message = "Email or Username are already Registered" };
 
             var user = _mapper.Map<User>(model);
@@ -72,7 +72,7 @@ namespace Train_D.Services
             }
 
             var jwtSecurityToken = await CreateJwtToken(user);
-           
+
 
             authModel.IsAuthenticated = true;
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
@@ -99,7 +99,7 @@ namespace Train_D.Services
             var authModel = new AuthModel();
             try
             {
-                
+
                 var settings = new GoogleJsonWebSignature.ValidationSettings()
                 {
                     Audience = new List<string> { this._jwt.GoogleClientId }
@@ -121,13 +121,13 @@ namespace Train_D.Services
 
                 return authModel;
             }
-            catch 
+            catch
             {
 
                 authModel.Message = "invaild token ";
                 return authModel;
             }
-            
+
         }
 
         private async Task<JwtSecurityToken> CreateJwtToken(User user)
