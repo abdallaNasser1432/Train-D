@@ -7,6 +7,13 @@
     <RootNamespace>Train_D</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="LoadDummyData\**" />
+    <Content Remove="LoadDummyData\**" />
+    <EmbeddedResource Remove="LoadDummyData\**" />
+    <None Remove="LoadDummyData\**" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 		<PackageReference Include="Google.Apis.Auth" Version="1.60.0" />
