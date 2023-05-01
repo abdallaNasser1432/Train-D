@@ -43,10 +43,10 @@ namespace Train_D.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        
         public async Task<IActionResult> Add([FromBody] StationAddDto DTO)
         {
-            if (!_StationServices.IsExist(DTO.StationName))
+            if (_StationServices.IsExist(DTO.StationName))
                 return BadRequest(new { Message = "Station Is Already Added" });
 
             var newStation = _mapper.Map<Station>(DTO);
