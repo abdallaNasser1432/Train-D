@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Train_D.Data;
 using Train_D.DTO;
 using Train_D.DTO.StationDtos;
 using Train_D.Models;
@@ -14,19 +16,28 @@ namespace Train_D.Controllers
     {
         private readonly IStationsServices _StationServices;
         private readonly IMapper _mapper; // add Interface IMapper 
-
-        public StationsController(IStationsServices stationsServices, IMapper mapper = null)
+        private readonly ApplicationDbContext _context;
+        public StationsController(IStationsServices stationsServices, IMapper mapper , ApplicationDbContext context)
         {
             _StationServices = stationsServices;
             _mapper = mapper;
+            _context = context;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var Stations = await _StationServices.GetAll();
-            var SationNamesGroup = _StationServices.GroupedSations(Stations.ToList());
-            return Ok(SationNamesGroup);
+            try
+            {
+                var SationNamesGroup=await _context.Stations.AsNoTracking().Select(s => s.StationName).ToListAsync();
+                return Ok(SationNamesGroup);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         [HttpGet("{StationName}")]
