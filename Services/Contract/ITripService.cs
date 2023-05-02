@@ -5,8 +5,6 @@ namespace Train_D.Services.Contract
 {
     public interface ITripService
     {
-        Task<IEnumerable<FromTo>> GetFromandToForTrip();
-        Task<Trip> GetSearchofTrip();
-        Dictionary<object, object> GroupedSations(List<FromTo> FromTo);
+        Task<Dictionary<string, object>> GetFromToStations();
     }
 }

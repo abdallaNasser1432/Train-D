@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Train_D.Data;
 using Train_D.DTO.TripDtos;
-using Train_D.Models;
 using Train_D.Services.Contract;
 
 namespace Train_D.Services
@@ -15,23 +14,14 @@ namespace Train_D.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<FromTo>> GetFromandToStations()
+        public async Task<Dictionary<string, object>> GetFromToStations()
         {
-            var trips = await _context.Trips
-                .Select(t => new FromTo{ From = t.StartStation,To = t.EndStaion }).Distinct().ToListAsync();  
-            return trips;
-        }
+            var trips = await _context.Trips.AsNoTracking()
+                .Select(t => new FromTo { From = t.StartStation, To = t.EndStaion }).Distinct().ToListAsync();
 
+            var values = new Dictionary<string, object>();
 
-        public Task<Trip> GetSearchofTrip()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Dictionary<object, object> GroupedSations(List<FromTo> FromTo)
-        {
-            var values = new Dictionary<object, object>();
-            var StartStation = FromTo.GroupBy(f => f.From)
+            var StartStation = trips.GroupBy(f => f.From)
                 .OrderBy(t => t.Key);
 
             foreach (var from in StartStation)

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Train_D.Services.Contract;
 
 namespace Train_D.Controllers
@@ -15,11 +14,10 @@ namespace Train_D.Controllers
             _tripService = tripService;
         }
 
-        [HttpGet]
+        [HttpGet("FromTo")]
         public async Task<IActionResult> GetAll()
         {
-            var trips = await _tripService.GetFromandToStations();
-            var FromTo = _tripService.GroupedSations(trips.ToList());
+            var FromTo = await _tripService.GetFromToStations();
             return Ok(FromTo);
         }
     }
