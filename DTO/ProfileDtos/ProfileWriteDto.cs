@@ -1,16 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Train_D.DTO.ProfileDtos
 {
     public record ProfileWriteDto
     {
-        [Required]
+        [NotNull]
         public string FirstName { get; init; }
-        [Required]
+        [NotNull]
         public string LastName { get; init; }
-        [Required]
+        [NotNull]
         public string City { get; init; }
-        [Required]
+        [NotNull]
         public string PhoneNumber { get; init; }
     }
 }

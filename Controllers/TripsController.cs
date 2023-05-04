@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Train_D.DTO.TripDtos;
 using Train_D.Services.Contract;
 
 namespace Train_D.Controllers
@@ -19,6 +20,15 @@ namespace Train_D.Controllers
         {
             var FromTo = await _tripService.GetFromToStations();
             return Ok(FromTo);
+        }
+
+        [HttpPost("TripTimes")]
+        public async Task<IActionResult> GetTripTimes([FromBody] SearchTripWriteDTO dto)
+        {
+            if (!_tripService.Isvalid(dto.Date))
+                return BadRequest(new { Massage = "Invalid Date" });
+                
+            return Ok();
         }
     }
 }
