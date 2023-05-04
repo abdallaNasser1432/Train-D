@@ -200,7 +200,7 @@ namespace Train_D.Migrations
 
                     b.HasKey("TrainId", "ClassName");
 
-                    b.ToTable("Classes");
+                    b.ToTable("Classes", (string)null);
                 });
 
             modelBuilder.Entity("Train_D.Models.ClassTrip", b =>
@@ -223,7 +223,7 @@ namespace Train_D.Migrations
 
                     b.HasIndex("TrainId", "ClassName");
 
-                    b.ToTable("ClassTrips");
+                    b.ToTable("ClassTrips", (string)null);
                 });
 
             modelBuilder.Entity("Train_D.Models.Station", b =>
@@ -256,7 +256,7 @@ namespace Train_D.Migrations
 
                     b.HasKey("StationName");
 
-                    b.ToTable("Stations");
+                    b.ToTable("Stations", (string)null);
                 });
 
             modelBuilder.Entity("Train_D.Models.Ticket", b =>
@@ -304,7 +304,7 @@ namespace Train_D.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("Train_D.Models.Train", b =>
@@ -317,7 +317,7 @@ namespace Train_D.Migrations
 
                     b.HasKey("TrainId");
 
-                    b.ToTable("Trains");
+                    b.ToTable("Trains", (string)null);
                 });
 
             modelBuilder.Entity("Train_D.Models.Trip", b =>
@@ -358,7 +358,7 @@ namespace Train_D.Migrations
 
                     b.HasIndex("TrainId");
 
-                    b.ToTable("Trips");
+                    b.ToTable("Trips", (string)null);
                 });
 
             modelBuilder.Entity("Train_D.Models.User", b =>

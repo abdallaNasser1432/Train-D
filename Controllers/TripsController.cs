@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Train_D.DTO.TripDtos;
 using Train_D.Services.Contract;
 
@@ -27,8 +28,14 @@ namespace Train_D.Controllers
         {
             if (!_tripService.Isvalid(dto.Date))
                 return BadRequest(new { Massage = "Invalid Date" });
-                
-            return Ok();
+
+            var result = await _tripService.TripTimes(dto);
+
+            if (result.IsNullOrEmpty())
+                return BadRequest(new { Massage = "Somthing goes wrong ,try again" });
+
+
+            return Ok(result);
         }
     }
 }
