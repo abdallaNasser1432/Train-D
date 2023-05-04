@@ -31,9 +31,10 @@ namespace Train_D.Services
             return values;
         }
 
+        // return false if date in the past or bigger than the date of today about 20 days
         public bool Isvalid(DateTime d)
         {
-            return (d.Year != 1) && (d.Date >= DateTime.Now.Date);
+            return (d.Year != 1) && (d.Date >= DateTime.Now.Date) && ((d.Date - DateTime.Now.Date).Days <= 20);
         }
     }
 }
