@@ -30,5 +30,10 @@ namespace Train_D.Services
             }
             return values;
         }
+
+        public bool Isvalid(DateTime d)
+        {
+            return (d.Year != 1) && (d.Date >= DateTime.Now.Date);
+        }
     }
 }

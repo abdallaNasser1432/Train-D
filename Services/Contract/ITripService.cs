@@ -6,5 +6,6 @@ namespace Train_D.Services.Contract
     public interface ITripService
     {
         Task<Dictionary<string, object>> GetFromToStations();
+        bool Isvalid(DateTime d);
     }
 }
