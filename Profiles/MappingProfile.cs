@@ -3,6 +3,7 @@ using Google.Apis.Auth;
 using Train_D.DTO;
 using Train_D.DTO.ProfileDtos;
 using Train_D.DTO.StationDtos;
+using Train_D.DTO.TripDtos;
 using Train_D.Models;
 
 namespace Train_D.Profiles
@@ -36,6 +37,9 @@ namespace Train_D.Profiles
 
             #endregion
 
+            #region TripsMAp
+            CreateMap<SearchTripReadDTO, SearchTripResultDTO>();
+            #endregion
         }
     }
 }

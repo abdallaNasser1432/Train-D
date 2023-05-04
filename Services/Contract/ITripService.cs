@@ -7,5 +7,6 @@ namespace Train_D.Services.Contract
     {
         Task<Dictionary<string, object>> GetFromToStations();
         bool Isvalid(DateTime d);
+        Task<List<SearchTripResultDTO>> TripTimes(SearchTripWriteDTO dTO);
     }
 }
