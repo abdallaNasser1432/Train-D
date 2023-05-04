@@ -27,12 +27,12 @@ namespace Train_D.Controllers
         public async Task<IActionResult> GetTripTimes([FromBody] SearchTripWriteDTO dto)
         {
             if (!_tripService.Isvalid(dto.Date))
-                return BadRequest(new { Massage = "Invalid Date" });
+                return BadRequest(new { Message = "Invalid Date" });
 
             var result = await _tripService.TripTimes(dto);
 
             if (result.IsNullOrEmpty())
-                return BadRequest(new { Massage = "Somthing goes wrong ,try again" });
+                return BadRequest(new { Message = "Somthing goes wrong ,try again" });
 
 
             return Ok(result);
