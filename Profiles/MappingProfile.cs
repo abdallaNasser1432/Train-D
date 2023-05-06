@@ -38,6 +38,10 @@ namespace Train_D.Profiles
             #endregion
 
             #region TripsMAp
+            CreateMap<ClassTrip, ClaassDTO>()
+                .ForMember(dest => dest.Coaches, src => src.MapFrom(src => src.Class.Coaches))
+                .ForMember(dest => dest.NumberOfSeatsCoach, src => src.MapFrom(src => src.Class.NumberOfSeatsCoach));
+            CreateMap<Ticket, SeatDTO>();
             CreateMap<SearchTripReadDTO, SearchTripResultDTO>();
             #endregion
         }

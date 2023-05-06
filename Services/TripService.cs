@@ -35,6 +35,53 @@ namespace Train_D.Services
             return values;
         }
 
+        public async Task<TrainInfoDTO> GetTrainInfoAsync(TrainInfoRequest request)
+        {
+            try
+            {
+                var classTrip = await _context.ClassTrips
+                              .Include(t => t.Trip)
+                              .Include(c => c.Class)
+                              .AsNoTracking()
+                              .Where(t => t.TripId == request.TripId)
+                              .ToListAsync();
+
+                if (classTrip.IsNullOrEmpty())
+                    return null;
+
+                // list of classes in Train
+                var classes = _mapper.Map<List<ClaassDTO>>(classTrip);
+
+                // to used in searsh (information about trip )
+                var TrainId = classTrip.FirstOrDefault().TrainId;
+                var tripStartTime = classTrip.FirstOrDefault().Trip.StartTime;
+                var tripArrivalTime = classTrip.FirstOrDefault().Trip.ArrivalTime;
+
+                // list of booked seats in Train
+                var seats = await _context.Tickets
+                                .Include(t => t.Trip)
+                                .AsNoTracking()
+                                .Where(t => (t.Date.Date == request.Date.Date) &&
+                                            (t.TrainId == TrainId) &&
+                                            ((t.Trip.StartTime <= tripStartTime && t.Trip.ArrivalTime > tripStartTime) ||
+                                             (t.Trip.StartTime < tripArrivalTime && t.Trip.ArrivalTime >= tripArrivalTime) ||
+                                             (t.Trip.StartTime >= tripStartTime && t.Trip.ArrivalTime <= tripArrivalTime)))
+                                .Select(t => new SeatDTO
+                                {
+                                    SeatNumber= t.SeatNumber,
+                                    Coach= t.Coach,
+                                    Class= t.Class,
+                                })
+                                .ToListAsync();
+
+                return new TrainInfoDTO { Classes = classes, Seats = seats };
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         // return false if date in the past or bigger than the date of today about 20 days
         public bool Isvalid(DateTime d)
         {
@@ -82,9 +129,7 @@ namespace Train_D.Services
                 {
                     trip.totalseats -= ticktes.Where(s =>
                           (s.TrainId == trip.TrainId) &&
-                          ((s.StartTime <= trip.StartTime && s.ArrivalTime > trip.StartTime) ||
-                         (s.StartTime < trip.ArrivalTime && s.ArrivalTime >= trip.ArrivalTime) ||
-                        (s.StartTime >= trip.StartTime && s.ArrivalTime <= trip.ArrivalTime))
+                          checkesTimes(s.StartTime, s.ArrivalTime, trip.StartTime, trip.ArrivalTime)
                     ).Count();
                 }
                 return _mapper.Map<List<SearchTripResultDTO>>(Trips.Where(t => t.totalseats > 0));
@@ -93,8 +138,15 @@ namespace Train_D.Services
             {
                 return null;
             }
-
-
         }
+
+        private bool checkesTimes(TimeSpan ticketStartTime, TimeSpan ticketArrivalTime, TimeSpan tripStartTime, TimeSpan tripArrivalTime)
+        {
+            return
+            (ticketStartTime <= tripStartTime && ticketArrivalTime > tripStartTime) ||
+            (ticketStartTime < tripArrivalTime && ticketArrivalTime >= tripArrivalTime) ||
+            (ticketStartTime >= tripStartTime && ticketArrivalTime <= tripArrivalTime);
+        }
+
     }
 }
