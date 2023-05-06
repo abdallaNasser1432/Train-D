@@ -13,9 +13,9 @@ namespace Train_D.Profiles
         public MappingProfile()
         {
             #region StationMap
-            
+
             CreateMap<Station, StationAddDto>().ReverseMap();
-            CreateMap<Station , StationDTO>().ReverseMap();
+            CreateMap<Station, StationDTO>().ReverseMap();
 
             #endregion
 

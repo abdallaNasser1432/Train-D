@@ -68,9 +68,9 @@ namespace Train_D.Services
                                              (t.Trip.StartTime >= tripStartTime && t.Trip.ArrivalTime <= tripArrivalTime)))
                                 .Select(t => new SeatDTO
                                 {
-                                    SeatNumber= t.SeatNumber,
-                                    Coach= t.Coach,
-                                    Class= t.Class,
+                                    SeatNumber = t.SeatNumber,
+                                    Coach = t.Coach,
+                                    Class = t.Class,
                                 })
                                 .ToListAsync();
 

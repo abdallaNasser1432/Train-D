@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using Train_D.Services;
-using Train_D.Models;
 using Train_D.Data;
-using Train_D.DTO;
-using AutoMapper;
-using Newtonsoft.Json.Linq;
+using Train_D.Models;
 
 namespace Train_D.Services
 {
@@ -34,7 +29,7 @@ namespace Train_D.Services
             _context.SaveChanges();
             return station;
         }
-        
+
         public Station Delete(Station station)
         {
             _context.Remove(station);
@@ -49,11 +44,11 @@ namespace Train_D.Services
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch 
+            catch
             {
                 return false;
             }
-            
+
         }
 
         public Dictionary<char, object> GroupedSations(List<string> stations)

@@ -1,5 +1,4 @@
 ﻿using Stripe;
-using Train_D.Models;
 using Train_D.Models.Stripe;
 
 namespace Train_D.Services
@@ -74,6 +73,6 @@ namespace Train_D.Services
               createdPayment.Amount,
               createdPayment.Id);
         }
-        
+
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Train_D.Models.Stripe;
 using Train_D.Services;
 
@@ -19,21 +18,32 @@ namespace Train_D.Controllers
         [HttpPost("customer/add")]
         public async Task<ActionResult<StripeCustomer>> AddStripeCustomer([FromBody] AddStripeCustomer customer, CancellationToken ct)
         {
-            StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(
-                customer,
-                ct);
 
-            return StatusCode(StatusCodes.Status200OK, createdCustomer);
+            try
+            {
+                StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(customer, ct);
+                return Ok(createdCustomer);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+
         }
 
         [HttpPost("payment/add")]
-        public async Task<ActionResult<StripePayment>> AddStripePayment([FromBody] AddStripePayment payment,CancellationToken ct)
+        public async Task<ActionResult<StripePayment>> AddStripePayment([FromBody] AddStripePayment payment, CancellationToken ct)
         {
-            StripePayment createdPayment = await _stripeService.AddStripePaymentAsync(
-                payment,
-                ct);
-
-            return StatusCode(StatusCodes.Status200OK, createdPayment);
+            try
+            {
+                StripePayment createdPayment = await _stripeService.AddStripePaymentAsync(payment, ct);
+                return Ok(new { Message = "Reservation successful", createdPayment.PaymentId });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

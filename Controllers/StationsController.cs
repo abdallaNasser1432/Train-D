@@ -43,7 +43,7 @@ namespace Train_D.Controllers
         }
 
         [HttpPost]
-        
+
         public async Task<IActionResult> Add([FromBody] StationAddDto DTO)
         {
             if (_StationServices.IsExist(DTO.StationName))
@@ -54,7 +54,7 @@ namespace Train_D.Controllers
 
             string Message = "Station Is Added";
 
-            return Ok(new {Message});
+            return Ok(new { Message });
         }
 
         [HttpPut("{StationName}")]
@@ -70,7 +70,7 @@ namespace Train_D.Controllers
             if (station is null)
                 return NotFound($"No Station was found with {StationName}");
 
-             _mapper.Map(DTO,station);
+            _mapper.Map(DTO, station);
 
             if (!await _StationServices.Update())
                 return BadRequest("something goes wrong ,try again!");

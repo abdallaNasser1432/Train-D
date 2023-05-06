@@ -9,7 +9,7 @@ namespace Train_D.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfileController : ControllerBase 
+    public class ProfileController : ControllerBase
     {
         private readonly IProfileService _profile;
         private long _maxSize = 1048576;
@@ -32,7 +32,7 @@ namespace Train_D.Controllers
             if (image.IsNullOrEmpty())
                 return BadRequest(new { Massage = "something goes wrong, try again" });
 
-            return Ok(new {Massage= "Image added successfully" });
+            return Ok(new { Massage = "Image added successfully" });
         }
 
         [HttpPut("UpdateProfile")]
@@ -42,7 +42,7 @@ namespace Train_D.Controllers
 
             var username = HttpContext.User.FindFirstValue("UserName");
 
-            var UserUpdated = await _profile.UpdateUserData(username,data);
+            var UserUpdated = await _profile.UpdateUserData(username, data);
 
             if (UserUpdated is null)
                 return BadRequest(new { Massage = "something goes wrong, try again" });
