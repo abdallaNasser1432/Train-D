@@ -37,5 +37,18 @@ namespace Train_D.Controllers
 
             return Ok(result);
         }
+        [HttpPost("TrainInfo")]
+        public async Task<IActionResult> GetTrainInfo([FromBody] TrainInfoRequest request)
+        {
+            if (!_tripService.Isvalid(request.Date))
+                return BadRequest("Invalid Date");
+
+            var TrainInfo = await _tripService.GetTrainInfoAsync(request);
+
+            if (TrainInfo is null)
+                return BadRequest("Somthing goes wrong ,try again");
+
+            return Ok(TrainInfo);
+        }
     }
 }
