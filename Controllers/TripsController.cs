@@ -27,12 +27,12 @@ namespace Train_D.Controllers
         public async Task<IActionResult> GetTripTimes([FromBody] SearchTripWriteDTO dto)
         {
             if (!_tripService.Isvalid(dto.Date))
-                return BadRequest(new { Message = "Invalid Date" });
+                return BadRequest(new { Message = "Invalid Date!" });
 
             var result = await _tripService.TripTimes(dto);
 
             if (result.IsNullOrEmpty())
-                return BadRequest(new { Message = "Somthing goes wrong ,try again" });
+                return BadRequest(new { Message = "Somthing goes wrong ,try again!" });
 
 
             return Ok(result);
@@ -41,12 +41,12 @@ namespace Train_D.Controllers
         public async Task<IActionResult> GetTrainInfo([FromBody] TrainInfoRequest request)
         {
             if (!_tripService.Isvalid(request.Date))
-                return BadRequest("Invalid Date");
+                return BadRequest(new { Message = "Invalid Date!" });
 
             var TrainInfo = await _tripService.GetTrainInfoAsync(request);
 
             if (TrainInfo is null)
-                return BadRequest("Somthing goes wrong ,try again");
+                return BadRequest(new { Message = "Something goes wrong ,try again!" });
 
             return Ok(TrainInfo);
         }
