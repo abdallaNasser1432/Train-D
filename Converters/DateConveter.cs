@@ -6,8 +6,7 @@ namespace Train_D.Converters
     public class DateConveter : JsonConverter<DateTime>
     {
         private string formatDate = "dd/MM/yyyy";
-        public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert,
-            JsonSerializerOptions options)
+        public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             try
             {
