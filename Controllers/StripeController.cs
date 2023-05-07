@@ -18,7 +18,6 @@ namespace Train_D.Controllers
         [HttpPost("customer/add")]
         public async Task<ActionResult<StripeCustomer>> AddStripeCustomer([FromBody] AddStripeCustomer customer, CancellationToken ct)
         {
-
             try
             {
                 StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(customer, ct);
@@ -26,10 +25,8 @@ namespace Train_D.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { Message = ex.Message });
             }
-
-
         }
 
         [HttpPost("payment/add")]
@@ -42,7 +39,7 @@ namespace Train_D.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { Message = ex.Message });
             }
         }
     }
