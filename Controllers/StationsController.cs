@@ -43,7 +43,7 @@ namespace Train_D.Controllers
         }
 
         [HttpPost]
-
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Add([FromBody] StationAddDto DTO)
         {
             if (_StationServices.IsExist(DTO.StationName))
