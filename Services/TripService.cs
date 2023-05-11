@@ -44,6 +44,16 @@ namespace Train_D.Services
                               .Include(c => c.Class)
                               .AsNoTracking()
                               .Where(t => t.TripId == request.TripId)
+                              .Select(t => new ClassTripDTO
+                              {
+                                  TrainId = t.TrainId,
+                                  StartTime = t.Trip.StartTime,
+                                  ArrivalTime = t.Trip.ArrivalTime,
+                                  ClassName = t.ClassName,
+                                  ClassPrice = t.ClassPrice,
+                                  Coaches = t.Class.Coaches,
+                                  NumberOfSeatsCoach = t.Class.NumberOfSeatsCoach
+                              })
                               .ToListAsync();
 
                 if (classTrip.IsNullOrEmpty())
@@ -54,8 +64,8 @@ namespace Train_D.Services
 
                 // to used in searsh (information about trip )
                 var TrainId = classTrip.FirstOrDefault().TrainId;
-                var tripStartTime = classTrip.FirstOrDefault().Trip.StartTime;
-                var tripArrivalTime = classTrip.FirstOrDefault().Trip.ArrivalTime;
+                var tripStartTime = classTrip.FirstOrDefault().StartTime;
+                var tripArrivalTime = classTrip.FirstOrDefault().ArrivalTime;
 
                 // list of booked seats in Train
                 var seats = await _context.Tickets
