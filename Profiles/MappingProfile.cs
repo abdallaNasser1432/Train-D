@@ -3,6 +3,7 @@ using Google.Apis.Auth;
 using Train_D.DTO;
 using Train_D.DTO.ProfileDtos;
 using Train_D.DTO.StationDtos;
+using Train_D.DTO.TicketDTO;
 using Train_D.DTO.TripDtos;
 using Train_D.Models;
 
@@ -41,6 +42,9 @@ namespace Train_D.Profiles
             CreateMap<ClassTripDTO, ClaassDTO>();
             CreateMap<Ticket, SeatDTO>();
             CreateMap<SearchTripReadDTO, SearchTripResultDTO>();
+            #endregion
+            #region TicketMap
+            CreateMap<TicketBookRequest, Ticket>();
             #endregion
         }
     }

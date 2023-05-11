@@ -49,6 +49,7 @@ namespace Train_D
             builder.Services.AddScoped<IStationsServices, StationsServices>();
             builder.Services.AddScoped<IProfileService, ProfileService>();
             builder.Services.AddScoped<ITripService, TripService>();
+            builder.Services.AddScoped<ITicketService, TicketService>();
 
 
             //Add Authantications
