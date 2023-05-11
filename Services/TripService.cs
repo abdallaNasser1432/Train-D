@@ -61,8 +61,8 @@ namespace Train_D.Services
                 var seats = await _context.Tickets
                                 .Include(t => t.Trip)
                                 .AsNoTracking()
-                                .Where(t => (t.Date.Date == request.Date.Date) &&
-                                            (t.TrainId == TrainId) &&
+                                .Where(t => (t.Date == request.Date.Date) &&
+                                            (t.Trip.TrainId == TrainId) &&
                                             ((t.Trip.StartTime <= tripStartTime && t.Trip.ArrivalTime > tripStartTime) ||
                                              (t.Trip.StartTime < tripArrivalTime && t.Trip.ArrivalTime >= tripArrivalTime) ||
                                              (t.Trip.StartTime >= tripStartTime && t.Trip.ArrivalTime <= tripArrivalTime)))
@@ -112,10 +112,10 @@ namespace Train_D.Services
                 var ticktes = await _context.Tickets
                                 .Include(t => t.Trip)
                                 .AsNoTracking()
-                                .Where(t => t.Date.Date == dTO.Date.Date)
+                                .Where(t => t.Date == dTO.Date.Date)
                                 .Select(t => new
                                 {
-                                    t.TrainId,
+                                    t.Trip.TrainId,
                                     t.Trip.StartTime,
                                     t.Trip.ArrivalTime
                                 })

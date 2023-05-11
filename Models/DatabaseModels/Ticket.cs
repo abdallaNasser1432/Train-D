@@ -24,7 +24,7 @@ namespace Train_D.Models
 
 
         public string UserId { get; set; }
-        public int TrainId { get; set; }
+        
         public int TripId { get; set; }
 
         public  Trip Trip { get; set; }
