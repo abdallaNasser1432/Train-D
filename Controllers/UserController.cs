@@ -43,7 +43,7 @@ namespace Train_D.Controllers
             if (!Result.IsAuthenticated)
                 return BadRequest(new { Message = Result.Message });
 
-            return Ok(new { Result.Token });
+            return Ok(new { Result.Token , Result.Message});
         }
 
         [HttpPost("LoginWithGoogle")]

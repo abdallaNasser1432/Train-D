@@ -76,6 +76,7 @@ namespace Train_D.Services
 
             authModel.IsAuthenticated = true;
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            authModel.Message = "Login Successfully";
 
             return authModel;
         }
