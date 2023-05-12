@@ -61,9 +61,37 @@ namespace Train_D.Services
 
         }
 
+        public async Task<IEnumerable<TicketDTO>> GetTickets(string userId)
+        {
+            var UserTicket = await _context.Tickets
+                .Where(t => t.UserId == userId)
+                .Select(t => new TicketDTO
+                {
+                    From = t.Trip.StartStation,
+                    To = t.Trip.EndStaion,
+                    StartTime = t.Trip.StartTime,
+                    EndTime = t.Trip.ArrivalTime,
+                    TicketId = t.TicketId,
+                    PassengerName = t.User.UserName,
+                    Date = t.Date,
+                    ClassName = t.Class,
+                    CoachNumber = t.Coach,
+                    SeatNumber = t.SeatNumber,
+                    Price = t.Amount
+                }).ToListAsync();
+
+            return UserTicket;
+        }
+
+
         public bool Isvaild(string pay)
         {
             return pay.StartsWith("ch");
+        }
+
+        public bool IsFound(string userId)
+        {
+            return _context.Tickets.Any(t => t.UserId == userId);
         }
     }
 }
