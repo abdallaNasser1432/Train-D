@@ -43,8 +43,25 @@ namespace Train_D.Profiles
             CreateMap<Ticket, SeatDTO>();
             CreateMap<SearchTripReadDTO, SearchTripResultDTO>();
             #endregion
+
             #region TicketMap
             CreateMap<TicketBookRequest, Ticket>();
+
+            CreateMap<Ticket, TicketDTO>()
+                .ForMember(dest => dest.StartTime, src => src.MapFrom(src => src.Trip.StartTime))
+                .ForMember(dest => dest.EndTime, src => src.MapFrom(src => src.Trip.ArrivalTime))
+                .ForMember(dest => dest.From, src => src.MapFrom(src => src.Trip.StartStation))
+                .ForMember(dest => dest.To, src => src.MapFrom(src => src.Trip.EndStaion))
+                .ForMember(dest => dest.TicketId, src => src.MapFrom(src => src.TicketId))
+                .ForMember(dest => dest.PassengerName, src => src.MapFrom(src => src.User.UserName))
+                .ForMember(dest => dest.Date, src => src.MapFrom(src => src.Date))
+                .ForMember(dest => dest.ClassName, src => src.MapFrom(src => src.Class))
+                .ForMember(dest => dest.CoachNumber, src => src.MapFrom(src => src.Coach))
+                .ForMember(dest => dest.SeatNumber, src => src.MapFrom(src => src.SeatNumber))
+                .ForMember(dest => dest.Price, src => src.MapFrom(src => src.Amount))
+                
+                .ReverseMap();
+
             #endregion
         }
     }
