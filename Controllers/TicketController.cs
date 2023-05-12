@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using System.Security.Claims;
 using Train_D.DTO.TicketDTO;
-using Train_D.DTO.TripDtos;
-using Train_D.Services;
 using Train_D.Services.Contract;
 
 namespace Train_D.Controllers
@@ -35,6 +31,18 @@ namespace Train_D.Controllers
                 return BadRequest(new { Message = "Something goes wroing ,try again !" });
 
             return Ok(newTicket);
+        }
+
+        [HttpGet("Ticket")]
+        [Authorize]
+        public async Task<IActionResult> GetTicketForUser()
+        {
+            var UserId = HttpContext.User.FindFirstValue("UserId");
+            if (!_ticketService.IsFound(UserId))
+                return BadRequest(new { message = "There Are No Tickets Reserved For This User" });
+            var UserTicket = await _ticketService.GetTickets(UserId);
+
+            return Ok(UserTicket);
         }
     }
 }
