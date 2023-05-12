@@ -36,5 +36,13 @@ namespace Train_D.Controllers
 
             return Ok(newTicket);
         }
+
+        [HttpGet("Ticket")]
+        [Authorize]
+        public async Task<IActionResult> GetTicketForUser()
+        {
+
+            return Ok();
+        }
     }
 }
