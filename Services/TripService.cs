@@ -132,7 +132,7 @@ namespace Train_D.Services
                                 .ToListAsync();
 
                 if (ticktes.IsNullOrEmpty())
-                    return _mapper.Map<List<SearchTripResultDTO>>(Trips.Where(t => t.totalseats > 0));
+                    return _mapper.Map<List<SearchTripResultDTO>>(Trips);
 
 
                 foreach (var trip in Trips)

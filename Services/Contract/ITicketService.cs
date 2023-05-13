@@ -8,8 +8,7 @@ namespace Train_D.Services.Contract
         bool Isvaild(string pay);
         Task<bool> IsExist(TicketBookRequest dto);
         Task<TicketReadDTO> Book(TicketBookRequest dto, string userId, string username);
-        bool IsFound(string userId);
-        Task<IEnumerable<TicketDTO>> GetTickets(string userId);
+        Task<IEnumerable<TicketDTO>> GetTickets(string userId,string username);
 
     }
 }

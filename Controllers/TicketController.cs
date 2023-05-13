@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Train_D.DTO.TicketDTO;
 using Train_D.Services.Contract;
@@ -33,15 +34,15 @@ namespace Train_D.Controllers
             return Ok(newTicket);
         }
 
-        [HttpGet("Ticket")]
+        [HttpGet("myTickets")]
         [Authorize]
         public async Task<IActionResult> GetTicketForUser()
         {
             var UserId = HttpContext.User.FindFirstValue("UserId");
-            if (!_ticketService.IsFound(UserId))
-                return BadRequest(new { message = "There Are No Tickets Reserved For This User" });
-            var UserTicket = await _ticketService.GetTickets(UserId);
-
+            var Username = HttpContext.User.FindFirstValue("UserName");
+            var UserTicket = await _ticketService.GetTickets(UserId,Username);
+            if (UserTicket.IsNullOrEmpty())
+                return BadRequest(new { Message = "There Are No Tickets Reserved For This User" });
             return Ok(UserTicket);
         }
     }

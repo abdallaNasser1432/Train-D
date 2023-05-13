@@ -41,18 +41,18 @@ namespace Train_D.Services
                                  .AsNoTracking()
                                  .Select(t => new
                                  {
-                                     StartTime = t.StartTime,
-                                     ArrivalTime = t.ArrivalTime,
-                                     TrainId = t.TrainId
+                                     t.StartTime,
+                                     t.ArrivalTime,
+                                     t.TrainId
                                  }).FirstOrDefaultAsync();
 
             var ticket = await _context.Tickets
                                  .Include(t => t.Trip)
                                  .AsNoTracking()
-                                 .Where(t => t.Date == dto.Date.Date)
+                                 .Where(t => (t.Date == dto.Date.Date) && (t.Trip.TrainId == trip.TrainId))
                                  .ToListAsync();
 
-            return ticket.Any(t => (t.Trip.TrainId == trip.TrainId) &&
+            return ticket.Any(t =>
                                   ((t.Trip.StartTime <= trip.StartTime && t.Trip.ArrivalTime > trip.StartTime) ||
                                   (t.Trip.StartTime < trip.ArrivalTime && t.Trip.ArrivalTime >= trip.ArrivalTime) ||
                                   (t.Trip.StartTime >= trip.StartTime && t.Trip.ArrivalTime <= trip.ArrivalTime)) &&
@@ -61,16 +61,30 @@ namespace Train_D.Services
 
         }
 
-        public async Task<IEnumerable<TicketDTO>> GetTickets(string userId )
+        public async Task<IEnumerable<TicketDTO>> GetTickets(string userId,string username)
         {
             try
             {
                 var UserTicket = await _context.Tickets
                     .Where(t => t.UserId == userId)
-                    .Select(t => _mapper.Map<TicketDTO>(t)).ToListAsync();
+                    .Select(t => new TicketDTO
+                    {
+                        From = t.Trip.StartStation,
+                        To = t.Trip.EndStaion,
+                        StartTime = t.Trip.StartTime,
+                        EndTime = t.Trip.ArrivalTime,
+                        TicketId = t.TicketId,
+                        PassengerName = username,
+                        Date = t.Date,
+                        ClassName = t.Class,
+                        CoachNumber = t.Coach,
+                        SeatNumber = t.SeatNumber,
+                        Price = t.Amount
+                    }).ToListAsync();
 
                 return UserTicket;
-            }catch(Exception ) 
+            }
+            catch (Exception)
             {
                 return null;
             }
@@ -82,9 +96,6 @@ namespace Train_D.Services
             return pay.StartsWith("ch");
         }
 
-        public bool IsFound(string userId)
-        {
-            return _context.Tickets.Any(t => t.UserId == userId);
-        }
+
     }
 }
