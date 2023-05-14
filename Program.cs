@@ -26,7 +26,18 @@ namespace Train_D
                 options.JsonSerializerOptions.Converters.Add(new TimeConveter());
             });
 
-            
+            // allow cors origin
+            string CorsPolicy = "AllowAll";
+            builder.Services.AddCors(option =>
+            {
+                option.AddPolicy(CorsPolicy, builder =>
+                {
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyOrigin();
+
+                });
+            });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -84,7 +95,8 @@ namespace Train_D
             }
 
             app.UseHttpsRedirection();
-
+            //Cors Policy
+            app.UseCors(CorsPolicy);
             app.UseAuthorization();
 
 
