@@ -23,6 +23,9 @@ namespace Train_D.Data.Config
                 .WithMany(tk => tk.Tickets);
 
             builder
+                .HasIndex(d => d.Date);
+
+            builder
                 .HasOne(t => t.User)
                 .WithMany(tk => tk.Tickets)
                 .HasForeignKey(u => u.UserId)
