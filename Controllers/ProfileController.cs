@@ -28,12 +28,6 @@ namespace Train_D.Controllers
 
             var username = HttpContext.User.FindFirstValue("UserName");
 
-            var image = await _profile.Upload(data.Image, username);
-
-            if (image.IsNullOrEmpty())
-                return BadRequest(new { Massage = "something goes wrong, try again" });
-         
-
             var UserUpdated = await _profile.UpdateUserData(username, data);
 
             if (UserUpdated is null)

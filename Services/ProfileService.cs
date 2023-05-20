@@ -46,21 +46,5 @@ namespace Train_D.Services
             }
 
         }
-
-        public async Task<byte[]> Upload(byte[] Image, string UserName)
-        {
-            try
-            {
-                var User = await _context.Users.SingleOrDefaultAsync(u => u.NormalizedUserName == UserName);
-                User.Image = Image;
-                await _context.SaveChangesAsync();
-                return Image;
-            }
-            catch
-            {
-                return Array.Empty<byte>();
-            }
-
-        }
     }
 }
