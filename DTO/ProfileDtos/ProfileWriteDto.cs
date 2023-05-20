@@ -13,5 +13,7 @@ namespace Train_D.DTO.ProfileDtos
         public string City { get; init; }
         [NotNull]
         public string PhoneNumber { get; init; }
+        [NotNull]
+        public byte [] Image { get; init; }
     }
 }
