@@ -46,7 +46,7 @@ namespace Train_D.Controllers
             return Ok(UserTicket);
         }
 
-        [HttpPost("Tracking/{TicketId}")]
+        [HttpGet("Tracking/{TicketId}")]
         public async Task<IActionResult> TrackingTrain([FromRoute] int TicketId)
         {
             var response = await _ticketService.getTrackingInfo(TicketId);
