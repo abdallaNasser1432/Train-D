@@ -61,7 +61,7 @@ namespace Train_D.Services
 
         }
 
-        public async Task<IEnumerable<TicketDTO>> GetTickets(string userId,string username)
+        public async Task<IEnumerable<TicketDTO>> GetTickets(string userId, string username)
         {
             try
             {
@@ -96,6 +96,29 @@ namespace Train_D.Services
             return pay.StartsWith("ch");
         }
 
+        public async Task<TrackingResponse> getTrackingInfo(int ticketId)
+        {
+            try
+            {
+                var location = await _context.Tickets
+                    .Where(t => t.TicketId == ticketId)
+                    .Select(t => new TrackingResponse
+                    {
+                        FromStation = t.Trip.StartStation,
+                        StartTime = t.Trip.StartTime,
+                        ArrivalTime = t.Trip.ArrivalTime,
+                        TrainId = t.Trip.TrainId,
+                        Latitude = t.Trip.StationBegain.Latitude,
+                        Longitude = t.Trip.StationBegain.Longitude,
+                    }).FirstOrDefaultAsync();
 
+                return location;
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

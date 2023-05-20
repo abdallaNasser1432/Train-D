@@ -40,10 +40,21 @@ namespace Train_D.Controllers
         {
             var UserId = HttpContext.User.FindFirstValue("UserId");
             var Username = HttpContext.User.FindFirstValue("UserName");
-            var UserTicket = await _ticketService.GetTickets(UserId,Username);
+            var UserTicket = await _ticketService.GetTickets(UserId, Username);
             if (UserTicket.IsNullOrEmpty())
                 return BadRequest(new { Message = "There Are No Tickets Reserved For This User" });
             return Ok(UserTicket);
+        }
+
+        [HttpPost("Tracking/{TicketId}")]
+        public async Task<IActionResult> TrackingTrain([FromRoute] int TicketId)
+        {
+            var response = await _ticketService.getTrackingInfo(TicketId);
+
+            if (response is null)
+                return BadRequest(new { Message = "TickedId doesn't exist!" });
+
+            return Ok(response);
         }
     }
 }
