@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Exchange.WebServices.Data;
 using Train_D.Data;
 using Train_D.DTO.TicketDTO;
 using Train_D.Models;
@@ -17,7 +18,7 @@ namespace Train_D.Services
             _mapper = mapper;
         }
 
-        public async Task<TicketReadDTO> Book(TicketBookRequest dto, string userid, string username)
+        public async Task<TicketDTO> Book(TicketBookRequest dto, string userid, string username)
         {
             try
             {
@@ -25,7 +26,22 @@ namespace Train_D.Services
                 newTicket.UserId = userid;
                 await _context.AddAsync(newTicket);
                 await _context.SaveChangesAsync();
-                return new TicketReadDTO { PassangerName = username, TicketId = newTicket.TicketId };
+                return await _context.Tickets
+                    .Where(t => t.TicketId == newTicket.TicketId)
+                    .Select(t => new TicketDTO
+                    {
+                        From = t.Trip.StartStation,
+                        To = t.Trip.EndStaion,
+                        StartTime = t.Trip.StartTime,
+                        EndTime = t.Trip.ArrivalTime,
+                        TicketId = t.TicketId,
+                        PassengerName = username,
+                        Date = t.Date,
+                        ClassName = t.Class,
+                        CoachNumber = t.Coach,
+                        SeatNumber = t.SeatNumber,
+                        Price = t.Amount
+                    }).SingleOrDefaultAsync();
             }
             catch (Exception)
             {
