@@ -47,6 +47,8 @@ namespace Train_D
             // Add Stripe Infrastructure
             builder.Services.AddStripeInfrastructure(builder.Configuration);
 
+            //add mailsetting
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
             //Add JWT
             builder.Services.Configure<JWT>(builder.Configuration.GetSection(nameof(JWT)));
             //Add Identity 
