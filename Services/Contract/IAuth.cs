@@ -8,6 +8,7 @@ namespace Train_D.Services
         public Task<AuthModel> Login(LoginModel model);
         public Task<string> AddRole(AddRoleModel model);
         public Task<AuthModel> LoginGoogle(string credential);
+        public Task<bool> SendEmailAsync(string mailTo, string subject, string body);
     }
 
 }

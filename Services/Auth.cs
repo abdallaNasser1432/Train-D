@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Google.Apis.Auth;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MimeKit;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -18,13 +22,15 @@ namespace Train_D.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JWT _jwt;
         private readonly IMapper _mapper;
+        private readonly MailSettings _mailSettings;
 
-        public Auth(UserManager<User> userManager, IOptions<JWT> jwt, IMapper mapper, RoleManager<IdentityRole> roleManager)
+        public Auth(UserManager<User> userManager, IOptions<JWT> jwt, IMapper mapper, RoleManager<IdentityRole> roleManager, IOptions<MailSettings> mailSettings)
         {
             _userManager = userManager;
             _jwt = jwt.Value;
             _mapper = mapper;
             _roleManager = roleManager;
+            _mailSettings = mailSettings.Value;
         }
 
         public async Task<AuthModel> Register(RegisterModel model)
@@ -174,7 +180,7 @@ namespace Train_D.Services
 
 
             var user = _mapper.Map<User>(payload);
-
+            user.EmailConfirmed = true;
             var result = await _userManager.CreateAsync(user);
 
             if (!result.Succeeded)
@@ -188,7 +194,8 @@ namespace Train_D.Services
             }
 
             await _userManager.AddToRoleAsync(user, "User");
-
+            
+            
             var jwtSecurityToken = await CreateJwtToken(user);
 
 
@@ -199,6 +206,38 @@ namespace Train_D.Services
                 Message = "Register Successfully"
             };
 
+        }
+
+        public async Task<bool> SendEmailAsync(string mailTo, string subject, string body)
+        {
+            try
+            {
+                var email = new MimeMessage
+                {
+                    Sender = MailboxAddress.Parse(_mailSettings.Email),
+                    Subject = subject
+                };
+
+                email.To.Add(MailboxAddress.Parse(mailTo));
+
+                var builder = new BodyBuilder();
+
+                builder.HtmlBody = body;
+                email.Body = builder.ToMessageBody();
+                email.From.Add(new MailboxAddress(_mailSettings.DisplayName, _mailSettings.Email));
+
+                using var smtp = new SmtpClient();
+                smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+                smtp.Authenticate(_mailSettings.Email, _mailSettings.Password);
+                await smtp.SendAsync(email);
+
+                smtp.Disconnect(true);
+                return true;
+            }
+            catch 
+            {
+                return false;
+            }
         }
     }
 }
