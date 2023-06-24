@@ -54,13 +54,12 @@ namespace Train_D.Services
 
             await _userManager.AddToRoleAsync(user, "User");
 
-            var jwtSecurityToken = await CreateJwtToken(user);
-
-
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            
             return new AuthModel
             {
                 IsAuthenticated = true,
-                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                Token = token,
                 Message = "Register Successfully"
             };
         }
@@ -238,6 +237,36 @@ namespace Train_D.Services
             {
                 return false;
             }
+        }
+
+        public async Task<bool> confirmEmail(string token, string email)
+        {
+            try
+            {
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == email);
+                if (user is null)
+                    return false;
+
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+                return result.Succeeded;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public string prepareBody(string firstName, string confirmationlink)
+        {
+            var filePath = $"{Directory.GetCurrentDirectory()}\\Templates\\EmailTemplate.html";
+            var str = new StreamReader(filePath);
+
+            var mailText = str.ReadToEnd();
+            str.Close();
+
+            mailText = mailText.Replace("[username]", firstName).Replace("https://www.youtube.com",confirmationlink);
+
+            return mailText;
         }
     }
 }

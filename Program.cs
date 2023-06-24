@@ -52,7 +52,8 @@ namespace Train_D
             //Add JWT
             builder.Services.Configure<JWT>(builder.Configuration.GetSection(nameof(JWT)));
             //Add Identity 
-            builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddIdentity<User, IdentityRole>().AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
             //Add ConntectionString 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Azure"))

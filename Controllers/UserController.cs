@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using Train_D.Models;
 using Train_D.Services;
 
@@ -29,7 +28,22 @@ namespace Train_D.Controllers
             if (!Result.IsAuthenticated)
                 return BadRequest(new { Message = Result.Message });
 
-            return Ok(new { Result.Token, Result.Message });
+            var confirmationlink = Url.Action(nameof(ConfirmEmail), "User", new { token = Result.Token, email = model.Email },Request.Scheme);
+
+            var body = _auth.prepareBody(model.FirstName, confirmationlink);
+
+            if(await _auth.SendEmailAsync(model.Email, "Email Verification", body))
+                return Ok(new { Message="Please check your email to verfaiy account " });
+
+            return Ok(new { Message = "somthing goes wrong, try again later !" });
+
+        }
+
+        [HttpGet("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            return Ok(await _auth.confirmEmail(token, email) ? "Thank you for confirming your mail"
+                                                             : "Your email is not confirmed, please try again later");
         }
 
         [HttpPost("Login")]
@@ -43,7 +57,7 @@ namespace Train_D.Controllers
             if (!Result.IsAuthenticated)
                 return BadRequest(new { Message = Result.Message });
 
-            return Ok(new { Result.Token , Result.Message});
+            return Ok(new { Result.Token, Result.Message });
         }
 
         [HttpPost("LoginWithGoogle")]
@@ -57,7 +71,7 @@ namespace Train_D.Controllers
             if (!Result.IsAuthenticated)
                 return BadRequest(new { Message = Result.Message });
 
-            
+
             return Ok(new { Result.Token, Result.Message });
 
         }
