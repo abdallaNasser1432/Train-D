@@ -70,6 +70,11 @@ namespace Train_D.Services
                 authModel.Message = "UserName or Password is incorrect!";
                 return authModel;
             }
+            if(!user.EmailConfirmed)
+            {
+                authModel.Message = "You must verfiy your email";
+                return authModel;
+            }
 
             var jwtSecurityToken = await CreateJwtToken(user);
 
