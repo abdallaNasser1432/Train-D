@@ -235,6 +235,9 @@ namespace Train_D.Services
             }
             catch 
             {
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == mailTo);
+                if (user == null) return false;
+                await _userManager.DeleteAsync(user);
                 return false;
             }
         }
