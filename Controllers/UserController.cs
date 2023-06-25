@@ -40,10 +40,18 @@ namespace Train_D.Controllers
         }
 
         [HttpGet("ConfirmEmail")]
-        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        public async Task<ContentResult> ConfirmEmail(string token, string email)
         {
-            return Ok(await _auth.confirmEmail(token, email) ? "Thank you for confirming your mail"
-                                                             : "Your email is not confirmed, please try again later");
+            if(await _auth.confirmEmail(token, email))
+            {
+                var filePath = $"{Directory.GetCurrentDirectory()}\\Templates\\verification success.html";
+                var str = new StreamReader(filePath);
+
+                var mailText = str.ReadToEnd();
+                str.Close();
+                return base.Content(mailText, "text/html");
+            }
+            return base.Content("Your email is not confirmed, please try again later", "text/html");
         }
 
         [HttpPost("Login")]
