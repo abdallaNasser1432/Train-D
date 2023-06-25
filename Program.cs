@@ -49,15 +49,28 @@ namespace Train_D
 
             //add mailsetting
             builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
+            // make reset token vaild for only 10 hours
+            builder.Services.Configure<DataProtectionTokenProviderOptions>(opts => opts.TokenLifespan = TimeSpan.FromHours(10));
+
+
             //Add JWT
             builder.Services.Configure<JWT>(builder.Configuration.GetSection(nameof(JWT)));
+
+
             //Add Identity 
             builder.Services.AddIdentity<User, IdentityRole>().AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+
             //Add ConntectionString 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Azure"))
             );
+
+
+
             //Add Services
             builder.Services.AddScoped<IAuth, Auth>();
             builder.Services.AddScoped<IStationsServices, StationsServices>();

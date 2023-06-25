@@ -35,7 +35,7 @@ namespace Train_D.Controllers
             if(await _auth.SendEmailAsync(model.Email, "Email Verification", body))
                 return Ok(new { Message="Please check your email to verfaiy account " });
 
-            return Ok(new { Message = "somthing goes wrong, try again later !" });
+            return BadRequest(new { Message = "somthing goes wrong, try again later !" });
 
         }
 
