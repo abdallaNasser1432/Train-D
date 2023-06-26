@@ -14,6 +14,7 @@ using System.Text;
 using Train_D.DTO.resetPasswordDto;
 using Train_D.Helper;
 using Train_D.Models;
+using Train_D.Templates;
 
 namespace Train_D.Services
 {
@@ -262,12 +263,7 @@ namespace Train_D.Services
 
         public string prepareBody(string firstName, string confirmationlink)
         {
-            var filePath = $"Templates\\EmailTemplate.html";
-            var str = new StreamReader(filePath);
-
-            var mailText = str.ReadToEnd();
-            str.Close();
-
+            var mailText = HtmlContent.EmailTemplate;
             mailText = mailText.Replace("[username]", firstName).Replace("https://www.youtube.com",confirmationlink);
 
             return mailText;
@@ -300,14 +296,8 @@ namespace Train_D.Services
 
         public string prepareResetPasswordBody(string userName, string resetPasswordlink)
         {
-            var filePath = $"Templates\\ResetEmailTemplate.html";
-            var str = new StreamReader(filePath);
-
-            var mailText = str.ReadToEnd();
-            str.Close();
-
+            var mailText = HtmlContent.ResetEmailTemplate;
             mailText = mailText.Replace("{{name}}", userName).Replace("{{action_url}}", resetPasswordlink);
-
             return mailText;
         }
 
