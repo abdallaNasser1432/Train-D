@@ -300,15 +300,9 @@ namespace Train_D.Services
 
         public string prepareResetPasswordBody(string userName, string resetPasswordlink)
         {
-            var filePath = $"{Directory.GetCurrentDirectory()}\\Templates\\ResetEmailTemplate.html";
-            var str = new StreamReader(filePath);
+            
 
-            var mailText = str.ReadToEnd();
-            str.Close();
-
-            mailText = mailText.Replace("{{name}}", userName).Replace("{{action_url}}", resetPasswordlink);
-
-            return mailText;
+            return "test from server";
         }
 
         public async Task<bool> resetPassword(resetPasswordDto request)
