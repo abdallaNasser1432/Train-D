@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using Train_D.DTO.resetPasswordDto;
 using Train_D.Models;
 using Train_D.Services;
+using Train_D.Templates;
 
 namespace Train_D.Controllers
 {
@@ -46,11 +47,8 @@ namespace Train_D.Controllers
         {
             if(await _auth.confirmEmail(token, email))
             {
-                var filePath = $"Templates\\verification success.html";
-                var str = new StreamReader(filePath);
-
-                var mailText = str.ReadToEnd();
-                str.Close();
+                var mailText = HtmlContent.verification_success;
+                
                 return base.Content(mailText, "text/html");
             }
             return base.Content("Your email is not confirmed, please try again later", "text/html");
@@ -79,12 +77,7 @@ namespace Train_D.Controllers
         [HttpGet("reset-password")]
         public async Task<ContentResult> ResetPassword(string token, string email)
         {
-
-            var filePath = $"Templates\\ResetpasswordForm.html";
-            var str = new StreamReader(filePath);
-
-            var mailText = str.ReadToEnd();
-            str.Close();
+            var mailText = HtmlContent.ResetPasswordForm;
             return base.Content(mailText, "text/html");
         }
 
@@ -94,13 +87,9 @@ namespace Train_D.Controllers
         {
             if (await _auth.resetPassword(request))
             {
-                var filePath = $"Templates\\verification success.html";
-                var str = new StreamReader(filePath);
-
-                var mailText = str.ReadToEnd();
+                var mailText = HtmlContent.verification_success;
                 mailText = mailText.Replace("your account has been successfully created!", "Your Password has changed Successfully!");
                
-                str.Close();
                 return base.Content(mailText, "text/html");
             }
             return base.Content("something goes wrong,Please try again later", "text/html");
