@@ -6,7 +6,7 @@
         public string To { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
-        public TimeSpan Duration { get; set; }
+        public string Duration { get; set; }
         public int TicketId { get; set; }
         public string PassengerName { get; set; }
         public DateTime Date { get; set; }
