@@ -82,6 +82,10 @@ namespace Train_D.Services
         {
             try
             {
+                await _context.Tickets
+                    .Where(d => d.Date < DateTime.Now.Date)
+                    .ExecuteDeleteAsync();
+                    
                 var UserTicket = await _context.Tickets
                     .Where(t => t.UserId == userId)
                     .Select(t => new TicketDTO
