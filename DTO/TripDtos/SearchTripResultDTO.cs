@@ -4,7 +4,6 @@
     {
         public TimeSpan StartTime { get; set; }
         public TimeSpan ArrivalTime { get; set; }
-        public TimeSpan Duration { get; set; }
         public int TripId { get; set; }
     }
 }

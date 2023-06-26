@@ -113,7 +113,6 @@ namespace Train_D.Services
                                   TripId = t.TripId,
                                   StartTime = t.StartTime,
                                   ArrivalTime = t.ArrivalTime,
-                                  Duration = t.ArrivalTime - t.StartTime,
                                   totalseats = t.Train.Classes.Sum(s => s.Coaches * s.NumberOfSeatsCoach)
                               }).ToListAsync();
 
