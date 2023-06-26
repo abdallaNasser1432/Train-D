@@ -56,7 +56,7 @@ namespace Train_D.Controllers
 
         [HttpPost("ForgotPassword")]
         [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword(string email)
+        public async Task<IActionResult> ForgotPassword([FromBody]string email)
         {
             var result =await _auth.forgetPassword(email);
 
