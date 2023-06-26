@@ -15,7 +15,7 @@ namespace Train_D.DTO.TicketDTO
         [NotNull]
         public string Class { get; set; }
         [NotNull]
-        public decimal Amount { get; set; }
+        public long Amount { get; set; }
         [NotNull]
         public string PaymentId { get; set; }
     }
