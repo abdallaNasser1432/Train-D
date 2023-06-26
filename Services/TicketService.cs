@@ -34,6 +34,7 @@ namespace Train_D.Services
                         To = t.Trip.EndStaion,
                         StartTime = t.Trip.StartTime,
                         EndTime = t.Trip.ArrivalTime,
+                        Duration = t.Trip.ArrivalTime - t.Trip.StartTime,
                         TicketId = t.TicketId,
                         PassengerName = username,
                         Date = t.Date,
