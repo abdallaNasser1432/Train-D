@@ -11,6 +11,7 @@ using MimeKit;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Train_D.DTO.resetPasswordDto;
 using Train_D.Helper;
 using Train_D.Models;
 
@@ -235,6 +236,9 @@ namespace Train_D.Services
             }
             catch 
             {
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == mailTo);
+                if (user == null) return false;
+                await _userManager.DeleteAsync(user);
                 return false;
             }
         }
@@ -267,6 +271,61 @@ namespace Train_D.Services
             mailText = mailText.Replace("[username]", firstName).Replace("https://www.youtube.com",confirmationlink);
 
             return mailText;
+        }
+
+        public async Task<AuthModel> forgetPassword(string email)
+        {
+            try
+            {
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == email);
+                if (user is null)
+                {
+                    return new AuthModel { Message = "invaild Email" };
+                }
+                    
+
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                return new AuthModel
+                {
+                    IsAuthenticated = true,
+                    Token = token,
+                    UserName=user.FirstName
+                };
+            }
+            catch
+            {
+                return new AuthModel { Message = "something goes wrong, try again later!" };
+            }
+        }
+
+        public string prepareResetPasswordBody(string userName, string resetPasswordlink)
+        {
+            var filePath = $"{Directory.GetCurrentDirectory()}\\Templates\\ResetEmailTemplate.html";
+            var str = new StreamReader(filePath);
+
+            var mailText = str.ReadToEnd();
+            str.Close();
+
+            mailText = mailText.Replace("{{name}}", userName).Replace("{{action_url}}", resetPasswordlink);
+
+            return mailText;
+        }
+
+        public async Task<bool> resetPassword(resetPasswordDto request)
+        {
+            try
+            {
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+                if (user is null)
+                    return false;
+
+                var result = await _userManager.ResetPasswordAsync(user, request.Token,request.Password);
+                return result.Succeeded;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

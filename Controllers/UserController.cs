@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using Train_D.DTO.resetPasswordDto;
 using Train_D.Models;
 using Train_D.Services;
 
@@ -35,15 +37,73 @@ namespace Train_D.Controllers
             if(await _auth.SendEmailAsync(model.Email, "Email Verification", body))
                 return Ok(new { Message="Please check your email to verfaiy account " });
 
-            return Ok(new { Message = "somthing goes wrong, try again later !" });
+            return BadRequest(new { Message = "somthing goes wrong, try again later !" });
 
         }
 
         [HttpGet("ConfirmEmail")]
-        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        public async Task<ContentResult> ConfirmEmail(string token, string email)
         {
-            return Ok(await _auth.confirmEmail(token, email) ? "Thank you for confirming your mail"
-                                                             : "Your email is not confirmed, please try again later");
+            if(await _auth.confirmEmail(token, email))
+            {
+                var filePath = $"{Directory.GetCurrentDirectory()}\\Templates\\verification success.html";
+                var str = new StreamReader(filePath);
+
+                var mailText = str.ReadToEnd();
+                str.Close();
+                return base.Content(mailText, "text/html");
+            }
+            return base.Content("Your email is not confirmed, please try again later", "text/html");
+        }
+
+        [HttpPost("ForgotPassword")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var result =await _auth.forgetPassword(email);
+
+            if(!result.IsAuthenticated)
+                return BadRequest(new { Message = result.Message });
+
+            var ResetPasswordlink = Url.Action(nameof(ResetPassword), "User", new { token = result.Token, email }, Request.Scheme);
+
+            var body = _auth.prepareResetPasswordBody(result.UserName, ResetPasswordlink);
+
+            if (await _auth.SendEmailAsync(email, "Reset Password", body))
+                return Ok(new { Message = "Please check your email to Reset your Password " });
+
+            return BadRequest(new { Message = "somthing goes wrong, try again later !" });
+
+        }
+
+        [HttpGet("reset-password")]
+        public async Task<ContentResult> ResetPassword(string token, string email)
+        {
+
+            var filePath = $"{Directory.GetCurrentDirectory()}\\Templates\\ResetpasswordForm.html";
+            var str = new StreamReader(filePath);
+
+            var mailText = str.ReadToEnd();
+            str.Close();
+            return base.Content(mailText, "text/html");
+        }
+
+        [HttpPost("reset-password")]
+        [AllowAnonymous]
+        public async Task<ContentResult> ResetPassword(resetPasswordDto request)
+        {
+            if (await _auth.resetPassword(request))
+            {
+                var filePath = $"{Directory.GetCurrentDirectory()}\\Templates\\verification success.html";
+                var str = new StreamReader(filePath);
+
+                var mailText = str.ReadToEnd();
+                mailText = mailText.Replace("your account has been successfully created!", "Your Password has changed Successfully!");
+               
+                str.Close();
+                return base.Content(mailText, "text/html");
+            }
+            return base.Content("something goes wrong,Please try again later", "text/html");
         }
 
         [HttpPost("Login")]
