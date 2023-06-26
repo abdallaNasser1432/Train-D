@@ -50,8 +50,7 @@ namespace Train_D
             //add mailsetting
             builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
-            // make reset token vaild for only 10 hours
-            builder.Services.Configure<DataProtectionTokenProviderOptions>(opts => opts.TokenLifespan = TimeSpan.FromHours(10));
+           
 
 
             //Add JWT
