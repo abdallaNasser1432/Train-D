@@ -46,7 +46,7 @@ namespace Train_D.Controllers
         {
             if(await _auth.confirmEmail(token, email))
             {
-                var filePath = $"{Directory.GetCurrentDirectory()}\\Templates\\verification success.html";
+                var filePath = $"Templates\\verification success.html";
                 var str = new StreamReader(filePath);
 
                 var mailText = str.ReadToEnd();
@@ -80,7 +80,7 @@ namespace Train_D.Controllers
         public async Task<ContentResult> ResetPassword(string token, string email)
         {
 
-            var filePath = $"{Directory.GetCurrentDirectory()}\\Templates\\ResetpasswordForm.html";
+            var filePath = $"Templates\\ResetpasswordForm.html";
             var str = new StreamReader(filePath);
 
             var mailText = str.ReadToEnd();
@@ -94,7 +94,7 @@ namespace Train_D.Controllers
         {
             if (await _auth.resetPassword(request))
             {
-                var filePath = $"{Directory.GetCurrentDirectory()}\\Templates\\verification success.html";
+                var filePath = $"Templates\\verification success.html";
                 var str = new StreamReader(filePath);
 
                 var mailText = str.ReadToEnd();

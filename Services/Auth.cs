@@ -262,7 +262,7 @@ namespace Train_D.Services
 
         public string prepareBody(string firstName, string confirmationlink)
         {
-            var filePath = $"{Directory.GetCurrentDirectory()}\\Templates\\EmailTemplate.html";
+            var filePath = $"Templates\\EmailTemplate.html";
             var str = new StreamReader(filePath);
 
             var mailText = str.ReadToEnd();
@@ -300,9 +300,15 @@ namespace Train_D.Services
 
         public string prepareResetPasswordBody(string userName, string resetPasswordlink)
         {
-            
+            var filePath = $"Templates\\ResetEmailTemplate.html";
+            var str = new StreamReader(filePath);
 
-            return "test from server";
+            var mailText = str.ReadToEnd();
+            str.Close();
+
+            mailText = mailText.Replace("{{name}}", userName).Replace("{{action_url}}", resetPasswordlink);
+
+            return mailText;
         }
 
         public async Task<bool> resetPassword(resetPasswordDto request)
