@@ -56,9 +56,9 @@ namespace Train_D.Controllers
 
         [HttpPost("ForgotPassword")]
         [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword([FromBody]string email)
+        public async Task<IActionResult> ForgotPassword([FromBody]ForgotPasswordDto email)
         {
-            var result =await _auth.forgetPassword(email);
+            var result =await _auth.forgetPassword(email.Email);
 
             if(!result.IsAuthenticated)
                 return BadRequest(new { Message = result.Message });
@@ -67,7 +67,7 @@ namespace Train_D.Controllers
 
             var body = _auth.prepareResetPasswordBody(result.UserName, ResetPasswordlink);
 
-            if (await _auth.SendEmailAsync(email, "Reset Password", body))
+            if (await _auth.SendEmailAsync(email.Email, "Reset Password", body))
                 return Ok(new { Message = "Please check your email to Reset your Password " });
 
             return BadRequest(new { Message = "somthing goes wrong, try again later !" });
