@@ -84,7 +84,7 @@ namespace Train_D.Controllers
         [AllowAnonymous]
         public async Task<ContentResult> ResetPassword(resetPasswordDto request)
         {
-            if (!await _auth.resetPassword(request))
+            if (await _auth.resetPassword(request))
             {
                 var mailText = HtmlContent.verification_success;
                 mailText = mailText.Replace("your account has been successfully created!", "Your Password has changed Successfully!");
