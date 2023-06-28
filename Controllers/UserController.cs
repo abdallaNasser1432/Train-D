@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 using Train_D.DTO.resetPasswordDto;
 using Train_D.Models;
 using Train_D.Services;
@@ -31,12 +30,12 @@ namespace Train_D.Controllers
             if (!Result.IsAuthenticated)
                 return BadRequest(new { Message = Result.Message });
 
-            var confirmationlink = Url.Action(nameof(ConfirmEmail), "User", new { token = Result.Token, email = model.Email },Request.Scheme);
+            var confirmationlink = Url.Action(nameof(ConfirmEmail), "User", new { token = Result.Token, email = model.Email }, Request.Scheme);
 
             var body = _auth.prepareBody(model.FirstName, confirmationlink);
 
-            if(await _auth.SendEmailAsync(model.Email, "Email Verification", body))
-                return Ok(new { Message="Please check your email to verfaiy account " });
+            if (await _auth.SendEmailAsync(model.Email, "Email Verification", body))
+                return Ok(new { Message = "Please check your email to verfaiy account " });
 
             return BadRequest(new { Message = "somthing goes wrong, try again later !" });
 
@@ -45,10 +44,10 @@ namespace Train_D.Controllers
         [HttpGet("ConfirmEmail")]
         public async Task<ContentResult> ConfirmEmail(string token, string email)
         {
-            if(await _auth.confirmEmail(token, email))
+            if (await _auth.confirmEmail(token, email))
             {
                 var mailText = HtmlContent.verification_success;
-                
+
                 return base.Content(mailText, "text/html");
             }
             return base.Content("Your email is not confirmed, please try again later", "text/html");
@@ -56,14 +55,14 @@ namespace Train_D.Controllers
 
         [HttpPost("ForgotPassword")]
         [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword([FromBody]ForgotPasswordDto email)
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto email)
         {
-            var result =await _auth.forgetPassword(email.Email);
+            var result = await _auth.forgetPassword(email.Email);
 
-            if(!result.IsAuthenticated)
+            if (!result.IsAuthenticated)
                 return BadRequest(new { Message = result.Message });
 
-            var ResetPasswordlink = Url.Action(nameof(ResetPassword), "User", new { token = result.Token, email }, Request.Scheme);
+            var ResetPasswordlink = Url.Action(nameof(ResetPassword), "User", new { token = result.Token, email =   email.Email }, Request.Scheme);
 
             var body = _auth.prepareResetPasswordBody(result.UserName, ResetPasswordlink);
 
@@ -75,7 +74,7 @@ namespace Train_D.Controllers
         }
 
         [HttpGet("reset-password")]
-        public async Task<ContentResult> ResetPassword(string token, string email)
+        public ContentResult ResetPassword(string token, string email)
         {
             var mailText = HtmlContent.ResetPasswordForm;
             return base.Content(mailText, "text/html");
@@ -85,11 +84,11 @@ namespace Train_D.Controllers
         [AllowAnonymous]
         public async Task<ContentResult> ResetPassword(resetPasswordDto request)
         {
-            if (await _auth.resetPassword(request))
+            if (!await _auth.resetPassword(request))
             {
                 var mailText = HtmlContent.verification_success;
                 mailText = mailText.Replace("your account has been successfully created!", "Your Password has changed Successfully!");
-               
+
                 return base.Content(mailText, "text/html");
             }
             return base.Content("something goes wrong,Please try again later", "text/html");
