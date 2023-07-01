@@ -20,7 +20,7 @@ namespace Train_D.Controllers
 
         [HttpPost("Book")]
         [Authorize]
-        public async Task<IActionResult> GetTripTimes([FromBody] TicketBookRequest dto)
+        public async Task<IActionResult> bookTicket([FromBody] TicketBookRequest dto)
         {
             if (await _ticketService.IsExist(dto) || !_ticketService.Isvaild(dto.PaymentId))
                 return BadRequest(new { Message = "seat is aleardy booked " });
