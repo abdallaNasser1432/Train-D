@@ -24,9 +24,6 @@ namespace Train_D
             {
                 options.JsonSerializerOptions.Converters.Add(new DateConveter());
                 options.JsonSerializerOptions.Converters.Add(new TimeConveter());
-            }).ConfigureApiBehaviorOptions(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
             });
 
             // allow cors origin

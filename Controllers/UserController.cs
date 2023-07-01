@@ -130,18 +130,7 @@ namespace Train_D.Controllers
         [Authorize]
         public async Task<IActionResult> changePassword([FromBody] ChangePasswrodRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = string.Empty;
-                foreach (var state in ModelState)
-                {
-                    foreach (var error in state.Value.Errors)
-                    {
-                        errors += $"{error.ErrorMessage},";
-                    }
-                }
-                return BadRequest(new { Message = errors });
-            }
+            
             var userId = HttpContext.User.FindFirstValue("UserId");
             var response = await _auth.changePassword(request.CurrentPassword, request.NewPassword, userId);
 
