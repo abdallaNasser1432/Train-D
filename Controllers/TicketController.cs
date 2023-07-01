@@ -43,7 +43,7 @@ namespace Train_D.Controllers
             var UserTicket = await _ticketService.GetTickets(UserId, Username);
             if (UserTicket.IsNullOrEmpty())
                 return BadRequest(new { Message = "There Are No Tickets Reserved For This User" });
-            return Ok(UserTicket);
+            return Ok(new { Tickets = UserTicket });
         }
 
         [HttpGet("Tracking/{TicketId}")]
