@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using Train_D.DTO.changePasswordDtos;
 using Train_D.DTO.resetPasswordDto;
 using Train_D.Models;
 using Train_D.Services;
@@ -62,7 +64,7 @@ namespace Train_D.Controllers
             if (!result.IsAuthenticated)
                 return BadRequest(new { Message = result.Message });
 
-            var ResetPasswordlink = Url.Action(nameof(ResetPassword), "User", new { token = result.Token, email =   email.Email }, Request.Scheme);
+            var ResetPasswordlink = Url.Action(nameof(ResetPassword), "User", new { token = result.Token, email = email.Email }, Request.Scheme);
 
             var body = _auth.prepareResetPasswordBody(result.UserName, ResetPasswordlink);
 
@@ -124,6 +126,18 @@ namespace Train_D.Controllers
 
         }
 
+        [HttpPost("change-password")]
+        [Authorize]
+        public async Task<IActionResult> changePassword([FromBody] ChangePasswrodRequest request)
+        {
+            
+            var userId = HttpContext.User.FindFirstValue("UserId");
+            var response = await _auth.changePassword(request.CurrentPassword, request.NewPassword, userId);
+
+            return response.Success ? Ok(new { Message = response.Message })
+                          : BadRequest(new { Message = response.Message });
+        }
+
         [HttpPost("AddRole")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddRole([FromBody] AddRoleModel model)
@@ -138,6 +152,7 @@ namespace Train_D.Controllers
 
             return Ok(model);
         }
+
 
     }
 }
