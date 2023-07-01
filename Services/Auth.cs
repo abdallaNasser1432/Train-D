@@ -11,10 +11,12 @@ using MimeKit;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Train_D.DTO.changePasswordDtos;
 using Train_D.DTO.resetPasswordDto;
 using Train_D.Helper;
 using Train_D.Models;
 using Train_D.Templates;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Train_D.Services
 {
@@ -104,7 +106,7 @@ namespace Train_D.Services
 
             var result = await _userManager.AddToRoleAsync(user, model.RoleName);
 
-            return result.Succeeded ? String.Empty : "Somthing Went Wrong";
+            return result.Succeeded ? string.Empty : "Somthing Went Wrong";
         }
 
         public async Task<AuthModel> LoginGoogle(string credential)
@@ -315,6 +317,32 @@ namespace Train_D.Services
             catch
             {
                 return false;
+            }
+        }
+
+        public async Task<ChangePasswordResponse> changePassword(string currentPassword, string newPassword, string userId)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user is null)
+                    return new ChangePasswordResponse { Success = false , Message = "this account has been removed from database"};
+                var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+                if (!result.Succeeded)
+                {
+                    var errors = string.Empty;
+
+                    foreach (var error in result.Errors)
+                        errors += $"{error.Description},";
+
+                    return new ChangePasswordResponse { Success = false, Message = errors };
+                }
+                return new ChangePasswordResponse { Success = true, Message = "Password changed Successfully!" };
+            }
+            catch
+            {
+                return new ChangePasswordResponse { Success = false, Message = "something goes wrong, please try again later!" };
             }
         }
     }

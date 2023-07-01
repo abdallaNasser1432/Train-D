@@ -1,4 +1,5 @@
-﻿using Train_D.DTO.resetPasswordDto;
+﻿using Train_D.DTO.changePasswordDtos;
+using Train_D.DTO.resetPasswordDto;
 using Train_D.Models;
 
 namespace Train_D.Services
@@ -15,6 +16,7 @@ namespace Train_D.Services
         public Task<AuthModel> forgetPassword(string email);
         public string prepareResetPasswordBody(string userName, string resetPasswordlink);
         public Task<bool> resetPassword(resetPasswordDto request);
+        public Task<ChangePasswordResponse> changePassword(string currentPassword, string newPassword, string userId);
     }
 
 }
