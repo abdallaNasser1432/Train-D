@@ -142,7 +142,11 @@ namespace Train_D.Services
                           checkesTimes(s.StartTime, s.ArrivalTime, trip.StartTime, trip.ArrivalTime)
                     ).Count();
                 }
+                if(dTO.Date == DateTime.Now.Date)
+                return _mapper.Map<List<SearchTripResultDTO>>(Trips.Where(t => t.totalseats > 0 && t.StartTime > DateTime.Now.TimeOfDay));
+
                 return _mapper.Map<List<SearchTripResultDTO>>(Trips.Where(t => t.totalseats > 0));
+
             }
             catch (Exception)
             {

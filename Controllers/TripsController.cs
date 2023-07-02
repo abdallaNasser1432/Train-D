@@ -31,7 +31,7 @@ namespace Train_D.Controllers
 
             var result = await _tripService.TripTimes(dto);
 
-            if (result.IsNullOrEmpty())
+            if (result is null)
                 return BadRequest(new { Message = "Somthing goes wrong ,try again!" });
 
 
