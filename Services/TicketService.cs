@@ -112,7 +112,6 @@ namespace Train_D.Services
             }
         }
 
-
         public bool Isvaild(string pay)
         {
             return pay.StartsWith("ch");
@@ -141,6 +140,20 @@ namespace Train_D.Services
             {
                 return null;
             }
+        }
+
+        public async Task<string> CancelTicket(int TicketId)
+        {
+           var ticket = await _context.Tickets.FindAsync(TicketId);
+           
+            if(ticket == null || ticket.Date < DateTime.Now)
+            {
+                return "Can not Cancel a Tikcet";
+            }
+
+             _context.Tickets.Remove(ticket);
+            await _context.SaveChangesAsync();
+            return "The reservation has been cancelled";
         }
     }
 }

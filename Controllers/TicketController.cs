@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Train_D.DTO.TicketDTO;
@@ -34,6 +35,15 @@ namespace Train_D.Controllers
             return Ok(newTicket);
         }
 
+        [HttpDelete("CancelTicket/{TicketId}")]
+        [Authorize]
+        public async Task <IActionResult> CancelTicket([FromRoute] int TicketId)
+        {
+            var ticket = await _ticketService.CancelTicket(TicketId);
+            return Ok( new { Message = ticket });
+        }
+        
+        
         [HttpGet("myTickets")]
         [Authorize]
         public async Task<IActionResult> GetTicketForUser()
