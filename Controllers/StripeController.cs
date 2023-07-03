@@ -48,12 +48,9 @@ namespace Train_D.Controllers
         [HttpPost("refund")]
         public async Task<IActionResult> Refund([FromBody] RefundRequestModel refundRequest)
         {
-            bool refundSuccess = await _stripeService.Refund(refundRequest.PaymentId, refundRequest.Amount);
-            
-            if(!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var refundResult = await _stripeService.Refund(refundRequest.PaymentId, refundRequest.Amount);
 
-            return (refundSuccess ? Ok(new { Message = "Refund successful" }) : BadRequest( new { Message = "Refund failed"}));
+            return (refundResult.Success ? Ok(new { Message = refundResult.Message }) : BadRequest( new { Message = refundResult.Message }));
         }
     }
 }

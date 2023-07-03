@@ -1,4 +1,6 @@
-﻿using Stripe;
+﻿using Microsoft.CodeAnalysis;
+using Stripe;
+using Train_D.DTO.Stripe;
 using Train_D.Models.Stripe;
 
 namespace Train_D.Services
@@ -75,7 +77,7 @@ namespace Train_D.Services
               createdPayment.Id);
         }
 
-        public async Task<bool> Refund(string chargeId, int amount)
+        public async Task<RefundCheckDto> Refund(string chargeId, int amount)
         {
             var refundService = new RefundService();
             var refundOptions = new RefundCreateOptions
@@ -84,9 +86,23 @@ namespace Train_D.Services
                 Amount = amount,
                 Reason = RefundReasons.RequestedByCustomer
             };
-            var refund = await refundService.CreateAsync(refundOptions);
+            try
+            {
+                var refund = await refundService.CreateAsync(refundOptions);
+                if(refund.Status == "succeeded")
+                    return new RefundCheckDto {Success=true ,Message= "Refund successful" };
 
-            return refund.Status == "succeeded";
+                return new RefundCheckDto { Success = false, Message = refund.Status };
+
+            }
+            catch(Exception ex)
+            {
+
+                return new RefundCheckDto { Success = false, Message = ex.Message};
+
+            }
+
+
         }
     }
 }

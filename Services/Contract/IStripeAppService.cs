@@ -1,4 +1,5 @@
-﻿using Train_D.Models.Stripe;
+﻿using Train_D.DTO.Stripe;
+using Train_D.Models.Stripe;
 
 namespace Train_D.Services
 {
@@ -6,7 +7,7 @@ namespace Train_D.Services
     {
         Task<StripeCustomer> AddStripeCustomerAsync(AddStripeCustomer customer, CancellationToken ct);
         Task<StripePayment> AddStripePaymentAsync(AddStripePayment payment, CancellationToken ct);
-        Task<bool> Refund(string chargeId, int amount);
+        Task<RefundCheckDto> Refund(string chargeId, int amount);
     }
 
 }
