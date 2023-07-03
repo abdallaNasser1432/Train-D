@@ -8,6 +8,7 @@ namespace Train_D.Services
         private readonly ChargeService _chargeService;
         private readonly CustomerService _customerService;
         private readonly TokenService _tokenService;
+        
 
         public StripeAppService(ChargeService chargeService, CustomerService customerService, TokenService tokenService)
         {
@@ -74,5 +75,18 @@ namespace Train_D.Services
               createdPayment.Id);
         }
 
+        public async Task<bool> Refund(string chargeId, int amount)
+        {
+            var refundService = new RefundService();
+            var refundOptions = new RefundCreateOptions
+            {
+                Charge = chargeId,
+                Amount = amount,
+                Reason = RefundReasons.RequestedByCustomer
+            };
+            var refund = await refundService.CreateAsync(refundOptions);
+
+            return refund.Status == "succeeded";
+        }
     }
 }

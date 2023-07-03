@@ -6,6 +6,7 @@ namespace Train_D.Services
     {
         Task<StripeCustomer> AddStripeCustomerAsync(AddStripeCustomer customer, CancellationToken ct);
         Task<StripePayment> AddStripePaymentAsync(AddStripePayment payment, CancellationToken ct);
+        Task<bool> Refund(string chargeId, int amount);
     }
 
 }

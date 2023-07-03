@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using Train_D.DTO.Stripe;
 using Train_D.Models.Stripe;
 using Train_D.Services;
 
@@ -41,6 +43,17 @@ namespace Train_D.Controllers
             {
                 return BadRequest(new { Message = ex.Message });
             }
+        }
+
+        [HttpPost("refund")]
+        public async Task<IActionResult> Refund([FromBody] RefundRequestModel refundRequest)
+        {
+            bool refundSuccess = await _stripeService.Refund(refundRequest.PaymentId, refundRequest.Amount);
+            
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return (refundSuccess ? Ok(new { Message = "Refund successful" }) : BadRequest( new { Message = "Refund failed"}));
         }
     }
 }
