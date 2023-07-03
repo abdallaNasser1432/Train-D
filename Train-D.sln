@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Train-D", "Train-D.csproj", "{3F48D641-B257-4C54-B202-DBB6BF5FE97D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Train-D", "Train-D.csproj", "{3F48D641-B257-4C54-B202-DBB6BF5FE97D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Train-D.Tests", "Train-D.Tests\Train-D.Tests.csproj", "{9B410777-B8E2-4320-AF9B-ED0288482221}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{3F48D641-B257-4C54-B202-DBB6BF5FE97D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F48D641-B257-4C54-B202-DBB6BF5FE97D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F48D641-B257-4C54-B202-DBB6BF5FE97D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B410777-B8E2-4320-AF9B-ED0288482221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B410777-B8E2-4320-AF9B-ED0288482221}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B410777-B8E2-4320-AF9B-ED0288482221}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B410777-B8E2-4320-AF9B-ED0288482221}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
