@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Linq;
 using Train_D.Data;
 using Train_D.DTO.TripDtos;
 using Train_D.Services.Contract;
@@ -143,9 +144,11 @@ namespace Train_D.Services
                     ).Count();
                 }
                 if(dTO.Date == DateTime.Now.Date)
-                return _mapper.Map<List<SearchTripResultDTO>>(Trips.Where(t => t.totalseats > 0 && t.StartTime > DateTime.Now.AddHours(3).TimeOfDay));
+                return _mapper.Map<List<SearchTripResultDTO>>(Trips.Where(t => t.totalseats > 0 && t.StartTime > DateTime.Now.AddHours(3).TimeOfDay)
+                                                                    .OrderBy(st=>st.StartTime));
 
-                return _mapper.Map<List<SearchTripResultDTO>>(Trips.Where(t => t.totalseats > 0));
+                return _mapper.Map<List<SearchTripResultDTO>>(Trips.Where(t => t.totalseats > 0)
+                                                                   .OrderBy(st => st.StartTime));
 
             }
             catch (Exception)
