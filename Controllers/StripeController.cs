@@ -18,7 +18,7 @@ namespace Train_D.Controllers
         }
 
         [HttpPost("customer/add")]
-        public async Task<ActionResult<StripeCustomer>> AddStripeCustomer([FromBody] AddStripeCustomer customer, CancellationToken ct)
+        public async Task<IActionResult> AddStripeCustomer([FromBody] AddStripeCustomer customer, CancellationToken ct)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace Train_D.Controllers
         }
 
         [HttpPost("payment/add")]
-        public async Task<ActionResult<StripePayment>> AddStripePayment([FromBody] AddStripePayment payment, CancellationToken ct)
+        public async Task<IActionResult> AddStripePayment([FromBody] AddStripePayment payment, CancellationToken ct)
         {
             try
             {
