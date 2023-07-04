@@ -80,5 +80,54 @@ namespace Train_D.Tests.Controllers
             //Assert
             result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
         }
+        public void TrainInfo_whenTrainInfoExistInDatabase_ShouldReturnOk()
+        {
+            //Arrnage
+
+            var TrainInfo = A.Fake<TrainInfoDTO>();
+            var dto = A.Fake<TrainInfoRequest>();
+            var Controller = new TripsController(_tripService);
+            A.CallTo(() => _tripService.Isvalid(dto.Date)).Returns(true);
+            A.CallTo(() => _tripService.GetTrainInfoAsync(dto)).Returns(TrainInfo);
+
+            //Act
+            var result = Controller.GetTrainInfo(dto);
+            //Assert
+
+            result.Result.Should().NotBeNull();
+            result.Result.Should().BeOfType(typeof(OkObjectResult));
+        }
+        [Fact]
+        public void GetTrainInfo_whenDateIsNotValid_ShouldReturnBadRequest()
+        {
+            //Arrnage
+
+            var TrainInfo = A.Fake<TrainInfoDTO>();
+            var dto = A.Fake<TrainInfoRequest>();
+            var Controller = new TripsController(_tripService);
+            A.CallTo(() => _tripService.Isvalid(dto.Date)).Returns(false);
+            A.CallTo(() => _tripService.GetTrainInfoAsync(dto)).Returns(TrainInfo);
+
+            //Act
+            var result = Controller.GetTrainInfo(dto);
+            //Assert
+            result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
+        }
+        [Fact]
+        public void GetTrainInfo_whenNoTrainInfoInDatabase_ShouldReturnBadRequest()
+        {
+            //Arrnage
+
+            TrainInfoDTO TrainInfo = null;
+            var dto = A.Fake<TrainInfoRequest>();
+            var Controller = new TripsController(_tripService);
+            A.CallTo(() => _tripService.Isvalid(dto.Date)).Returns(true);
+            A.CallTo(() => _tripService.GetTrainInfoAsync(dto)).Returns(TrainInfo);
+
+            //Act
+            var result = Controller.GetTrainInfo(dto);
+            //Assert
+            result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
+        }
     }
 }
