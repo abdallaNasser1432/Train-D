@@ -4,6 +4,7 @@ using System.Security.Claims;
 using Train_D.DTO.changePasswordDtos;
 using Train_D.DTO.resetPasswordDto;
 using Train_D.Models;
+using Train_D.Models.AuthenticationModels;
 using Train_D.Services;
 using Train_D.Templates;
 
@@ -111,12 +112,12 @@ namespace Train_D.Controllers
         }
 
         [HttpPost("LoginWithGoogle")]
-        public async Task<IActionResult> LoginWithGoogle([FromBody] string credential)
+        public async Task<IActionResult> LoginWithGoogle([FromBody] GoogleTokenModel request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var Result = await _auth.LoginGoogle(credential);
+            var Result = await _auth.LoginGoogle(request.credential);
 
             if (!Result.IsAuthenticated)
                 return BadRequest(new { Message = Result.Message });
