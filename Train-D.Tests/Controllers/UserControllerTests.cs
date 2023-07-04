@@ -49,5 +49,35 @@ namespace Train_D.Tests.Controllers
             result.Result.Should().NotBeNull();
             result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
         }
+        [Fact]
+        public void LoginWithGoogle_whenUserLoginWithGoogleAccount_shouldReturnOk()
+        {
+            //Arranage
+            var model = "fdsafsfsfsaf234fs";
+            var sub = A.Fake<AuthModel>();
+            A.CallTo(() => _auth.LoginGoogle(model)).Returns(sub);
+            sub.IsAuthenticated = true;
+            var controller = new UserController(_auth);
+            //Act
+            var result = controller.LoginWithGoogle(model);
+            //Assert
+            result.Result.Should().NotBeNull();
+            result.Result.Should().BeOfType(typeof(OkObjectResult));
+        }
+        [Fact]
+        public void LoginWithGoogle_whenUserIsNotAuthenticatedWithGoogleAccount_shouldReturnBadRequest()
+        {
+            //Arranage
+            var model = "fsafsaflkjjlsfas23423";
+            var sub = A.Fake<AuthModel>();
+            A.CallTo(() => _auth.LoginGoogle(model)).Returns(sub);
+            sub.IsAuthenticated = false;
+            var controller = new UserController(_auth);
+            //Act
+            var result = controller.LoginWithGoogle(model);
+            //Assert
+            result.Result.Should().NotBeNull();
+            result.Result.Should().BeOfType(typeof(BadRequestObjectResult));
+        }
     }
 }
