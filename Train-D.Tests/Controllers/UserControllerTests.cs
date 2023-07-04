@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Train_D.Controllers;
 using Train_D.Models;
+using Train_D.Models.AuthenticationModels;
 using Train_D.Services;
 
 namespace Train_D.Tests.Controllers
@@ -53,9 +54,9 @@ namespace Train_D.Tests.Controllers
         public void LoginWithGoogle_whenUserLoginWithGoogleAccount_shouldReturnOk()
         {
             //Arranage
-            var model = "fdsafsfsfsaf234fs";
+            var model = A.Fake<GoogleTokenModel>();
             var sub = A.Fake<AuthModel>();
-            A.CallTo(() => _auth.LoginGoogle(model)).Returns(sub);
+            A.CallTo(() => _auth.LoginGoogle(model.credential)).Returns(sub);
             sub.IsAuthenticated = true;
             var controller = new UserController(_auth);
             //Act
@@ -68,9 +69,9 @@ namespace Train_D.Tests.Controllers
         public void LoginWithGoogle_whenUserIsNotAuthenticatedWithGoogleAccount_shouldReturnBadRequest()
         {
             //Arranage
-            var model = "fsafsaflkjjlsfas23423";
+            var model = A.Fake<GoogleTokenModel>();
             var sub = A.Fake<AuthModel>();
-            A.CallTo(() => _auth.LoginGoogle(model)).Returns(sub);
+            A.CallTo(() => _auth.LoginGoogle(model.credential)).Returns(sub);
             sub.IsAuthenticated = false;
             var controller = new UserController(_auth);
             //Act
