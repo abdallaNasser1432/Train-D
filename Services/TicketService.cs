@@ -148,12 +148,22 @@ namespace Train_D.Services
            
             if(ticket == null || ticket.Date < DateTime.Now)
             {
-                return "Can not Cancel a Tikcet";
+                return "can't cancel a ticket if trip is today";
             }
 
              _context.Tickets.Remove(ticket);
             await _context.SaveChangesAsync();
             return "The reservation has been cancelled";
+        }
+
+        public async Task<string> GetPaymentId(int ticketId)
+        {
+           var paymentId = await _context.Tickets.Where(t=> t.TicketId==ticketId).FirstOrDefaultAsync();
+
+            if (paymentId is null)
+                return "Ticket Id is Incorrect";
+
+            return paymentId.PaymentId;
         }
     }
 }

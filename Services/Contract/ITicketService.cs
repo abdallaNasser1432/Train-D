@@ -11,5 +11,6 @@ namespace Train_D.Services.Contract
         Task<IEnumerable<TicketDTO>> GetTickets(string userId,string username);
         Task<TrackingResponse> getTrackingInfo(int ticketId);
         Task<string> CancelTicket(int TicketId);
+        Task<string> GetPaymentId(int ticketId);
     }
 }

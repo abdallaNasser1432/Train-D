@@ -43,7 +43,6 @@ namespace Train_D.Controllers
             return Ok( new { Message = ticket });
         }
         
-        
         [HttpGet("myTickets")]
         [Authorize]
         public async Task<IActionResult> GetTicketForUser()

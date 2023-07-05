@@ -3,6 +3,7 @@ using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Train_D.DTO.Stripe;
 using Train_D.Models.Stripe;
 using Train_D.Services;
+using Train_D.Services.Contract;
 
 namespace Train_D.Controllers
 {
@@ -11,10 +12,12 @@ namespace Train_D.Controllers
     public class StripeController : Controller
     {
         private readonly IStripeAppService _stripeService;
+        private readonly ITicketService _ticketService;
 
-        public StripeController(IStripeAppService stripeService)
+        public StripeController(IStripeAppService stripeService, ITicketService ticketService)
         {
             _stripeService = stripeService;
+            _ticketService = ticketService;
         }
 
         [HttpPost("customer/add")]
@@ -44,6 +47,19 @@ namespace Train_D.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
+
+
+        [HttpGet ("GetpaymentId/{tickentId}")]
+        public async Task<IActionResult> GetPaymentId([FromRoute] int tickentId)
+        {
+            var paymentId = await _ticketService.GetPaymentId(tickentId);
+            
+            if(!paymentId.Contains("ch"))
+                return BadRequest(new {Message = "Ticket Id is Incorrect" });
+            
+            return Ok(new { message = paymentId });
+        }
+
 
         [HttpPost("refund")]
         public async Task<IActionResult> Refund([FromBody] RefundRequestModel refundRequest)
