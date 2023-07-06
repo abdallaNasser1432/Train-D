@@ -111,7 +111,7 @@ namespace Train_D.Controllers
             return Ok(new { Result.Token, Result.Message });
         }
 
-        [HttpPost("LoginWithGoogle")]
+        [HttpPost("LoginWithGoogle/{request}")]
         public async Task<IActionResult> LoginWithGoogle([FromRoute] GoogleTokenModel request)
         {
             if (!ModelState.IsValid)
