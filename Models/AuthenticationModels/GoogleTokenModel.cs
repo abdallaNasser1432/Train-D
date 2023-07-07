@@ -2,6 +2,6 @@
 {
     public class GoogleTokenModel
     {
-        public string credential { get; set; }
+        public string idToken { get; set; }
     }
 }
