@@ -6,6 +6,7 @@ namespace Train_D.Services.Contract
     {
         public Task<ProfileWriteDto> UpdateUserData(string UserName,ProfileWriteDto data);
         public Task<ProfileReadDto> GetData(string UserName);
+        public Task<DataForSetting> GetDataForSetting(string username);
 
     }
 }

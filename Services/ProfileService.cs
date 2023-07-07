@@ -46,5 +46,19 @@ namespace Train_D.Services
             }
 
         }
+
+
+        public async Task <DataForSetting> GetDataForSetting(string username)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == username);
+         
+            var result = new DataForSetting
+            {
+                username = user.UserName,
+                Image = user.Image
+            };
+
+            return result;
+        }
     }
 }

@@ -54,12 +54,13 @@ namespace Train_D.Controllers
 
         [HttpGet("GetUserNameAndPicture")]
         [Authorize]
-        public IActionResult GetUserNameAndPicture()
+        public async Task<IActionResult> GetDataForSetting()
         {
             var username = HttpContext.User.FindFirstValue("UserName");
-            var picture = HttpContext.User.FindFirstValue("Image");
 
-            return Ok(new { username, picture });
+            var result = await _profile.GetDataForSetting(username);
+
+            return Ok(result);
         }
     }
 }
