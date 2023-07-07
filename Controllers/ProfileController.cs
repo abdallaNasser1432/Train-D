@@ -51,5 +51,15 @@ namespace Train_D.Controllers
             return Ok(Userdata);
         }
 
+
+        [HttpGet("GetUserNameAndPicture")]
+        [Authorize]
+        public IActionResult GetUserNameAndPicture()
+        {
+            var username = HttpContext.User.FindFirstValue("UserName");
+            var picture = HttpContext.User.FindFirstValue("Image");
+
+            return Ok(new { username, picture });
+        }
     }
 }
