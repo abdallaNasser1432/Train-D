@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Exchange.WebServices.Data;
 using Train_D.Data;
+using Train_D.DTO.Stripe;
 using Train_D.DTO.TicketDTO;
 using Train_D.Models;
 using Train_D.Services.Contract;
@@ -156,14 +157,21 @@ namespace Train_D.Services
             return "The reservation has been cancelled";
         }
 
-        public async Task<string> GetPaymentId(int ticketId)
+        public async Task<PaymentResponse> GetPaymentId(int ticketId)
         {
-           var paymentId = await _context.Tickets.Where(t=> t.TicketId==ticketId).FirstOrDefaultAsync();
+            var paymentId = await _context.Tickets.Where(t=> t.TicketId==ticketId).FirstOrDefaultAsync();
 
-            if (paymentId is null)
-                return "Ticket Id is Incorrect";
+            if(paymentId is null)
+            {
+                return null;
+            }
 
-            return paymentId.PaymentId;
+            var result = new PaymentResponse
+            {
+                paymentID = paymentId.PaymentId,
+                Data = paymentId.Date.Date
+            };
+            return result ;
         }
     }
 }
