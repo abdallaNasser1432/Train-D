@@ -1,5 +1,4 @@
-﻿using Train_D.DTO.Stripe;
-using Train_D.DTO.TicketDTO;
+﻿using Train_D.DTO.TicketDTO;
 
 
 namespace Train_D.Services.Contract
@@ -12,6 +11,6 @@ namespace Train_D.Services.Contract
         Task<IEnumerable<TicketDTO>> GetTickets(string userId,string username);
         Task<TrackingResponse> getTrackingInfo(int ticketId);
         Task<string> CancelTicket(int TicketId);
-        Task<PaymentResponse> GetPaymentId(int ticketId);
+        Task<string> GetPaymentId(int ticketId);
     }
 }

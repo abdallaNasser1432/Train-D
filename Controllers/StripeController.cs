@@ -54,19 +54,16 @@ namespace Train_D.Controllers
         {
             var paymentId = await _ticketService.GetPaymentId(tickentId);
             
-            if(paymentId is null)
+            if(!paymentId.Contains("ch"))
                 return BadRequest(new {Message = "Ticket Id is Incorrect" });
             
-            return Ok(paymentId);
+            return Ok(new { message = paymentId });
         }
 
 
         [HttpPost("refund")]
         public async Task<IActionResult> Refund([FromBody] RefundRequestModel refundRequest)
         {
-            if (refundRequest.date.Date < DateTime.Now)
-                return BadRequest(new { Message = "can't cancel a ticket if trip is today" });
-
             var refundResult = await _stripeService.Refund(refundRequest.PaymentId, refundRequest.Amount);
 
             return (refundResult.Success ? Ok(new { Message = refundResult.Message }) : BadRequest( new { Message = refundResult.Message }));
