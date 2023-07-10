@@ -133,7 +133,7 @@ namespace Train_D.Services
                                 .ToListAsync();
 
                 if (ticktes.IsNullOrEmpty())
-                    return _mapper.Map<List<SearchTripResultDTO>>(Trips);
+                    return _mapper.Map<List<SearchTripResultDTO>>(Trips.OrderBy(st => st.StartTime));
 
 
                 foreach (var trip in Trips)
