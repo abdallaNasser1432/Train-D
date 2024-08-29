@@ -10,15 +10,18 @@ using Train_D.Controllers;
 using Train_D.DTO.Stripe;
 using Train_D.Models.Stripe;
 using Train_D.Services;
+using Train_D.Services.Contract;
 
 namespace Train_D.Tests.Controllers
 {
     public class StripeControllerTests
     {
         private readonly IStripeAppService _stripeService;
+        private readonly ITicketService _ticketService;
         public StripeControllerTests()
         {
             _stripeService = A.Fake<IStripeAppService>();
+            _ticketService = A.Fake<ITicketService>();
         }
         [Fact]
         public void AddStripeCustomer_whenCustomerIsCreated_shouldReturnOk()
@@ -28,7 +31,7 @@ namespace Train_D.Tests.Controllers
             var customer = A.Fake<AddStripeCustomer>();
             CancellationToken cancelToken = new CancellationToken();
             A.CallTo(() => _stripeService.AddStripeCustomerAsync(customer, cancelToken)).Returns(createdCustomer);
-            var controller = new StripeController(_stripeService);
+            var controller = new StripeController(_stripeService, _ticketService);
             //Act
             var result=controller.AddStripeCustomer(customer, cancelToken); 
             //Assert
@@ -44,7 +47,7 @@ namespace Train_D.Tests.Controllers
             var customer = A.Fake<AddStripePayment>();
             CancellationToken cancelToken = new CancellationToken();
             A.CallTo(() => _stripeService.AddStripePaymentAsync(customer, cancelToken)).Returns(createdCustomer);
-            var controller = new StripeController(_stripeService);
+            var controller = new StripeController(_stripeService, _ticketService);
             //Act
             var result = controller.AddStripePayment(customer, cancelToken);
             //Assert
@@ -59,7 +62,7 @@ namespace Train_D.Tests.Controllers
             var refundResult = A.Fake<RefundCheckDto>();
             var refundRequest = A.Fake<RefundRequestModel>();
             A.CallTo(() => _stripeService.Refund(refundRequest.PaymentId, refundRequest.Amount)).Returns(refundResult);
-            var controller = new StripeController(_stripeService);
+            var controller = new StripeController(_stripeService,_ticketService);
             refundResult.Success = true;
             //Act
             var result = controller.Refund(refundRequest);
@@ -75,7 +78,7 @@ namespace Train_D.Tests.Controllers
             var refundResult = A.Fake<RefundCheckDto>();
             var refundRequest = A.Fake<RefundRequestModel>();
             A.CallTo(() => _stripeService.Refund(refundRequest.PaymentId, refundRequest.Amount)).Returns(refundResult);
-            var controller = new StripeController(_stripeService);
+            var controller = new StripeController(_stripeService,_ticketService);
             refundResult.Success = false;
             //Act
             var result = controller.Refund(refundRequest);

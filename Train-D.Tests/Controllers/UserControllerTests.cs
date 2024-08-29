@@ -56,7 +56,7 @@ namespace Train_D.Tests.Controllers
             //Arranage
             var model = A.Fake<GoogleTokenModel>();
             var sub = A.Fake<AuthModel>();
-            A.CallTo(() => _auth.LoginGoogle(model.credential)).Returns(sub);
+            A.CallTo(() => _auth.LoginGoogle(model.idToken)).Returns(sub);
             sub.IsAuthenticated = true;
             var controller = new UserController(_auth);
             //Act
@@ -71,7 +71,7 @@ namespace Train_D.Tests.Controllers
             //Arranage
             var model = A.Fake<GoogleTokenModel>();
             var sub = A.Fake<AuthModel>();
-            A.CallTo(() => _auth.LoginGoogle(model.credential)).Returns(sub);
+            A.CallTo(() => _auth.LoginGoogle(model.idToken)).Returns(sub);
             sub.IsAuthenticated = false;
             var controller = new UserController(_auth);
             //Act
