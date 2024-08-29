@@ -8,13 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="LoadDummyData\**" />
     <Compile Remove="Train-D.Tests\**" />
-    <Content Remove="LoadDummyData\**" />
     <Content Remove="Train-D.Tests\**" />
-    <EmbeddedResource Remove="LoadDummyData\**" />
     <EmbeddedResource Remove="Train-D.Tests\**" />
-    <None Remove="LoadDummyData\**" />
     <None Remove="Train-D.Tests\**" />
   </ItemGroup>
 
